@@ -81,13 +81,10 @@ impl StringDiffAlgorithm for HammingDistance {
 			let mut opp_vec: Vec<StringDiffOp> = Vec::new();
 			for i in 0..s1.len() {
 				if s1.chars().nth(i).unwrap() != s2.chars().nth(i).unwrap() {
-					let new_opp = StringDiffOp {
-						kind: StringDiffOpKind::Substitute(
-							s1.chars().nth(i).unwrap(),
-							s2.chars().nth(i).unwrap(),
-						),
-						index: i,
-					};
+					let new_opp = StringDiffOp::new_substitute
+						(s1.chars().nth(i).unwrap(),
+						s2.chars().nth(i).unwrap(),
+						i);
 					opp_vec.push(new_opp)
 				}
 			}
@@ -315,7 +312,7 @@ mod dcode_tests {
 	use crate::{HammingDistance, StringDiffAlgorithm, StringDiffOp};
 
 	#[test]
-	fn test_LevenshteinDistance_edit_distance() {
+	fn test_levenshtein_distance_edit_distance() {
 		let test_struct = super::LevenshteinDistance {};
 
 		assert_eq!(3, test_struct.distance("reset", "sets"));
@@ -324,7 +321,7 @@ mod dcode_tests {
 	}
 
 	#[test]
-	fn test_LevenshteinDistance_opp_distance() {
+	fn test_levenshtein_distance_op_distance() {
 		let test_struct = super::LevenshteinDistance {};
 
 		let mut test_vec: Vec<StringDiffOp> = Vec::new();
@@ -365,7 +362,7 @@ mod dcode_tests {
 	}
 
 	#[test]
-	fn test_HammingDistance_edit_distance() {
+	fn test_hamming_distance_edit_distance() {
 		let test_struct = super::HammingDistance {};
 
 		assert_eq!(3, test_struct.distance("karolin", "kathrin"));
@@ -376,7 +373,7 @@ mod dcode_tests {
 	}
 
 	#[test]
-	fn test_HammingDistance_opp_distance() {
+	fn test_hamming_distance_op_distance() {
 		let test_struct = super::HammingDistance {};
 
 		let mut test_vec: Vec<StringDiffOp> = Vec::new();
