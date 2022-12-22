@@ -16,7 +16,6 @@ pub struct StringDiffOp {
 }
 
 impl StringDiffOp {
-	// a generic constructor
 	pub fn new(kind: StringDiffOpKind, index: usize) -> Self {
 		Self { kind, index }
 	}
@@ -45,7 +44,7 @@ pub(crate) fn remove(start: usize, stop: usize, s: &str) -> String {
 	result
 }
 
-pub fn aplly_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
+pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 	let mut new_string: String = s.into();
 
 	for i in diffs.iter() {
@@ -60,7 +59,7 @@ pub fn aplly_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 				new_string.replace_range((i.index)..(i.index + 1), &_y.to_string())
 			}
 			StringDiffOpKind::Transpose(_x, _y) => {
-				panic!("aplly_diff does not currently support the transpose operation yet")
+				panic!("apply_diff does not currently support the transpose operation yet")
 			}
 		}
 	}
@@ -113,12 +112,12 @@ impl LevenshteinDistance {
 		cmp::min(x, cmp::min(y, z))
 	}
 	/// At a given (x,y) we must choose the minimum value between a cells
-	/// Top, Left, and Diagnal value. Depending on which cell is chosen between
+	/// Top, Left, and Diagonal value. Depending on which cell is chosen between
 	/// the three it will tell us if its a deletion, insertion or substitution operation.
 	/// if we chooze x(The value above the cell) as the min value its a insertion operation (symbolized by '^')
 	/// if we choose y(The value left of the cell) as the min value its a deletion operation(symbolized by '<')
 	/// if we choose z(The value diagnal of the cell) as the min value its a substitution operation( sybmolized by '\' )
-	/// else we get an x (should never happen since either(x,y,z should be the smalles))
+	/// we should always return either x,y,z if somehow we dont we panic with the unrechable macro.
 	pub(crate) fn min_dist_with_dir(x: usize, y: usize, z: usize) -> (usize, char) {
 		if x <= y && x <= z {
 			return (x, '^');
@@ -129,7 +128,7 @@ impl LevenshteinDistance {
 		if z <= x && z <= y {
 			return (z, '\\');
 		}
-		(0, 'x')
+		unreachable!()
 	}
 
 	pub(crate) fn print_vector<T: std::fmt::Debug>(my_vector: &[T]) {
@@ -158,10 +157,7 @@ impl LevenshteinDistance {
 		let mut prev_char: char = ' ';
 
 		loop {
-			if top_str_len == 0 && left_str_len == 0 && prev_char == '^' {
-				Self::reverse_vec_and_indexes(&mut diff_ops, top_str_len);
-				break;
-			}
+
 			if top_str_len == 0 && left_str_len == 0 {
 				break;
 			}
@@ -444,12 +440,12 @@ mod dcode_tests {
 
 		assert_eq!(
 			String::from("sitting"),
-			super::aplly_diff("kitten", test_vec)
+			super::apply_diff("kitten", test_vec)
 		);
 		assert_eq!(
 			String::from("Sunday"),
-			super::aplly_diff("Saturday", test_vec_2)
+			super::apply_diff("Saturday", test_vec_2)
 		);
-		assert_eq!(String::from("SETS"), super::aplly_diff("RESET", test_vec_3));
+		assert_eq!(String::from("SETS"), super::apply_diff("RESET", test_vec_3));
 	}
 }
