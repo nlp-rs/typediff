@@ -1,12 +1,15 @@
 [package]
-name = "rust-template"
-version = "0.1.0"
+name = "differ-rs"
+version = "0.0.0"
 authors = [
-	"First Name Last Name, <yourname@gmail.com>",
-	"Another Person <anotherperson@outlook.com>"
+	"Samantha Nguyen, <contact@samanthanguyen.me>",
+	"Alfredo Gutierrez <icealfredo123@gmail.com>"
 ]
-description = "Your description of the Rust library"
+description = "Provides edit distance, delta vectors between 2 words, and word transformation"
+repository = "https://github.com/nlp-rs/differ.rs.git"
 readme = "README.md"
+keywords = ["nlp", "Edit-distance", "HammingDistance", "LevenshteinDistance"]
+categories = ["data-structures", "algorithms", "text-processing", "text-editors"]
 license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.63.0"
