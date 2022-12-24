@@ -80,14 +80,15 @@ impl StringDiffAlgorithm for HammingDistance {
 			let mut opp_vec: Vec<StringDiffOp> = Vec::new();
 			for i in 0..s1.len() {
 				if s1.chars().nth(i).unwrap() != s2.chars().nth(i).unwrap() {
-					let new_opp = StringDiffOp::new_substitute
-						(s1.chars().nth(i).unwrap(),
+					let new_opp = StringDiffOp::new_substitute(
+						s1.chars().nth(i).unwrap(),
 						s2.chars().nth(i).unwrap(),
-						i);
+						i,
+					);
 					opp_vec.push(new_opp)
 				}
 			}
-		    opp_vec
+			opp_vec
 		}
 	}
 
@@ -157,7 +158,6 @@ impl LevenshteinDistance {
 		let mut prev_char: char = ' ';
 
 		loop {
-
 			if top_str_len == 0 && left_str_len == 0 {
 				break;
 			}
