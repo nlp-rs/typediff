@@ -1,4 +1,8 @@
 # Differ.rs
+[![License](https://img.shields.io/badge/license-MIT%20%26%20Apache%202.0-green)](#license)
+[![CI](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml)
+[![Security audit](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml)
+> warning: **Differ.rs is currently experimental**
 This crate provides edit distance, delta vectors between 2 words, and lets you apply delta vectors in order to transform words.
 
 ## Install
@@ -11,17 +15,17 @@ differ-rs = "0.0.0"
 ```
 
 ## Features
-* `apply_diff` : Allows users to apply delta vectors in order to transform a words.
+* `apply_diff`: Allows users to apply delta vectors in order to transform a words.
 * `extra_traits`: all `struct`s implemented in `differ-rs` are `HammingDistance` and `LevenshteinDistance`. Each Struct implements the `diff` and `distance` methods. 
 
 ## How it works
-* `apply_diff`works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
-* `StringDiffAlgorithm` provides two methods `diff` which gives you a transformation vector from the first to second string. the `distance` method gives you the edit distance from the frist argument to the second argument. The structs `HammingDistance` and `LevenshteinDistance` have their own implementations for each method.
+* `apply_diff` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
+* `StringDiffAlgorithm` provides two methods `diff` which gives you a transformation vector from the first to second string. The `distance` method gives you the edit distance from the frist argument to the second argument. The structs `HammingDistance` and `LevenshteinDistance` have their own implementations for each method.
 
 ## Examples
 
 Getting the edit distance between two words using Levenshtein algorithm 
-```
+```rs
 use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
 fn main(){
     let my_levensthein = LevenshteinDistance {};
@@ -31,10 +35,10 @@ fn main(){
     assert_eq!(3, edit_distance)
 }
 ```
-Note: We are getting the edit distance to get from "Sitting" to "Kitten".
+>Note: We are getting the edit distance to get from "Sitting" to "Kitten".
 
 Getting the delta vectors between two words using Levenshtein algorithm 
-```
+```rs
 use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
 fn main(){
     let my_levensthein = LevenshteinDistance {};
@@ -56,7 +60,7 @@ StringDiffOp { kind: Substitute('S', 'K'), index: 0 }
 ```
 
 Getting the edit distance between two words using Hamming algorithm 
-```
+```rs
 use differ_rs::{HammingDistance, StringDiffAlgorithm};
 fn main(){
     let my_hamming = HammingDistance {};
@@ -72,7 +76,7 @@ will cause a panic to be triggered.
 
 
 Getting the delta vectors between two words using Hamming algorithm 
-```
+```rs
 use differ_rs::{HammingDistance, StringDiffAlgorithm};
 fn main(){
     let my_hamming = HammingDistance {};
@@ -93,7 +97,7 @@ StringDiffOp { kind: Substitute('l', 'r'), index: 4 }
 ```
 
 Applying delta vectors to words
-```
+```rs
 use differ_rs::{HammingDistance, LevenshteinDistance, StringDiffAlgorithm,apply_diff};
 fn main(){
     let my_levensthein = LevenshteinDistance {};
