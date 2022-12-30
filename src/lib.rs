@@ -39,8 +39,6 @@ impl StringDiffOp {
 	}
 }
 
-
-
 pub trait StringDiffAlgorithm {
 	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp>;
 	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize;
