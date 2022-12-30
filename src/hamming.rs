@@ -1,6 +1,7 @@
 use crate::{StringDiffAlgorithm, StringDiffOp};
 
 pub struct HammingDistance {}
+impl HammingDistance{}
 impl StringDiffAlgorithm for HammingDistance {
 	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp> {
 		if s1.len() != s2.len() {
@@ -22,17 +23,7 @@ impl StringDiffAlgorithm for HammingDistance {
 	}
 
 	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize {
-		if s1.len() != s2.len() {
-			panic!("Strings must be same length");
-		} else {
-			let mut edit_distance: usize = 0;
-			for i in 0..s1.len() {
-				if s1.chars().nth(i).unwrap() != s2.chars().nth(i).unwrap() {
-					edit_distance += 1;
-				}
-			}
-			edit_distance
-		}
+        self.diff(s1, s2).len()
 	}
 }
 

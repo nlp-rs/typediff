@@ -114,9 +114,7 @@ impl LevenshteinDistance {
 
 		diff_ops
 	}
-}
-impl StringDiffAlgorithm for LevenshteinDistance {
-	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp> {
+    pub(crate) fn get_operation_matrix(s1: &str, s2: &str) -> Vec<Vec<char>> {
 		let first_string_len: usize = s1.len();
 		let second_string_len: usize = s2.len();
 
@@ -154,39 +152,18 @@ impl StringDiffAlgorithm for LevenshteinDistance {
 				); //substitution
 			}
 		}
+        dir_vector
+    }
 
-		LevenshteinDistance::get_operations(&dir_vector, s2, s1)
+}
+impl StringDiffAlgorithm for LevenshteinDistance {
+	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp> {
+        let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
+		LevenshteinDistance::get_operations(&dir_matrix, s2, s1)
 	}
 	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize {
-		let first_string_len: usize = s1.len();
-		let second_string_len: usize = s2.len();
-
-		let mut dist_vector = vec![vec![0usize; first_string_len + 1]; second_string_len + 1];
-
-		for i in 0..first_string_len + 1 {
-			dist_vector[0][i] = i;
-		}
-
-		for i in 0..second_string_len + 1 {
-			dist_vector[i][0] = i;
-		}
-
-		let mut sub_cost: usize = 0;
-		for i in 1..second_string_len + 1 {
-			for j in 1..first_string_len + 1 {
-				if s1.chars().nth(j - 1).unwrap() == s2.chars().nth(i - 1).unwrap() {
-					sub_cost = 0;
-				} else {
-					sub_cost = 1;
-				}
-				dist_vector[i][j] = LevenshteinDistance::min_dist(
-					dist_vector[i - 1][j] + 1,
-					dist_vector[i][j - 1] + 1,
-					dist_vector[i - 1][j - 1] + sub_cost,
-				);
-			}
-		}
-		dist_vector[second_string_len][first_string_len]
+        let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
+		LevenshteinDistance::get_operations(&dir_matrix, s2, s1).len()
 	}
 }
 
