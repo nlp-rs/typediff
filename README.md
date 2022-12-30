@@ -1,66 +1,121 @@
-# Rust Repository Template 🦀
-[![License](https://img.shields.io/badge/License-MIT%20%26%20Apache%202.0-blue)](#license)
-[![CI](https://github.com/nlp-rs/rust-template/actions/workflows/main.yml/badge.svg)](https://github.com/nlp-rs/rust-template/actions/workflows/main.yml)
-[![Security audit](https://github.com/nlp-rs/rust-template/actions/workflows/security-audit.yml/badge.svg)](https://github.com/nlp-rs/rust-template/actions/workflows/security-audit.yml)
-[![codecov](https://codecov.io/gh/nlp-rs/rust-template/branch/main/graph/badge.svg?token=6ZSIWAQTHU)](https://codecov.io/gh/nlp-rs/rust-template)
-
-Repository template to get quickly started with writing Rust libraries, ready for distributing.
-
-## Getting started
-Open your favorite terminal and clone this locally.
- - With the [GitHub CLI](https://cli.github.com/) (replace `<project>` with what you'd like to call your project):
-   ```shell
-   gh repo create <project> --template nlp-rs/rust-template
-   ```
- - With the Git CLI:
-   ```shell
-   git clone https://github.com/nlp-rs/rust-template.git
-   ```
-
-## Features
- - [x] Remote development support with [GitHub Codespaces](https://github.com/features/codespaces)
- - [x] Debugging with the [LLDB Debugger](https://lldb.llvm.org/) tool in Visual Studio Code ([VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb))
- - [x] Fuzz testing with LLVM's [libFuzzer](https://llvm.org/docs/LibFuzzer.html) tool and [`cargo fuzz`](https://github.com/rust-fuzz/cargo-fuzz) ([Reference](https://rust-fuzz.github.io/book/introduction.html))
- - [x] Performance benchmarks in Rust with Criterion and Iai (suitable to run in GitHub Actions CI environments)
- - [x] CI/CD support with [GitHub Actions](https://github.com/features/actions), allowing to automate:
-   - [x] Running tests and benchmarks
-   - [x] Running [Rustfmt](https://github.com/rust-lang/rustfmt) and [Clippy](https://github.com/rust-lang/rust-clippy) for detecting formatting and linting errors, respectively
-   - [x] Daily, midnight scheduled audits of Rust packages (for outdated dependencies, compatible software licenses, and software vulnerabilities) with [`EmbarkStudios/cargo-deny-action`](https://github.com/EmbarkStudios/cargo-deny-action)
-   - [ ] Generating performance benchmark graphs, auto-publishing to GitHub Pages
-   - [x] Documentation of API docs and [mdBook](https://github.com/rust-lang/mdBook) using GitHub Pages
-   - [x] Linted commit messages with [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) 
-   - [x] Semantic version bumping, `CHANGELOG.md` updates, and new package releases
-
-## Configure
-| Tool                     | File path                                                | Reference                                                                                                        |
-|--------------------------|----------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| GitHub Codespaces        | [`devcontainer.json`](./.devcontainer/devcontainer.json) | [Reference](https://containers.dev/implementors/json_reference/)                                                 |
-| GitHub Actions           | [`.github/workflows`](./.github/workflows)               | [Reference](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)               |
-| Cargo package            | [`Cargo.toml` ](./Cargo.toml)                            | [Reference](https://doc.rust-lang.org/cargo/reference/manifest.html)                                             |
-| Clippy (Rust linter)     | [`.clippy.toml`](./.clippy.toml)                         | [Repository](https://github.com/rust-lang/rust-clippy), [ Reference ]( https://rust-lang.github.io/rust-clippy/) |
-| Rustfmt (Rust formatter) | [`.rustfmt.toml`](./.rustfmt.toml)                       | [Repository](https://github.com/rust-lang/rustfmt), [ Reference](https://rust-lang.github.io/rustfmt/)           |
-| Commitlint               | [`.commitlintrc.json`](./.commitlintrc.json)            | [Repository](https://github.com/conventional-changelog/commitlint), [Reference](https://commitlint.js.org/#/)    |
-| `cargo-deny`             | [`deny.toml`](./deny.toml)                               | [Repository](https://github.com/EmbarkStudios/cargo-deny)                                                        |
-
-## Run scripts locally
- - Run unit/integration/doc tests: `cargo test`
- - Run fuzz tests: `cargo fuzz <fuzz-target>`
- - Run Rustfmt: `cargo fmt`
- - Run Clippy: `cargo clippy`
- - Run performance benchmarks: `cargo bench`
- - Generate API docs for crate: `cargo doc`
- - Generate mdBook docs for crate: `mdbook build`
- - Run security audits: `cargo audit` (requires installing [`cargo-audit`](https://crates.io/crates/cargo-audit) locally)
- - Lint commit messages: `npm run lint:commit` (requires installing [`commitlint`](https://commitlint.js.org/#/) locally with `npm install`)
-
-----
-
-# {{library}}
-{{library description}}
+# Differ.rs
+[![License](https://img.shields.io/badge/license-MIT%20%26%20Apache%202.0-green)](#license)
+[![CI](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml)
+[![Security audit](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml)
+> warning: **Differ.rs is currently experimental**
+This crate provides edit distance, delta vectors between 2 words, and lets you apply delta vectors in order to transform words.
 
 ## Install
 ```shell
-cargo add {{library}}
+cargo add differ-rs
+```
+or, simply add the following string to your Cargo.toml:
+```
+differ-rs = "0.0.0"
+```
+
+## Features
+* `apply_diff`: Allows users to apply delta vectors in order to transform a words.
+* `extra_traits`: all `struct`s implemented in `differ-rs` are `HammingDistance` and `LevenshteinDistance`. Each Struct implements the `diff` and `distance` methods. 
+
+## How it works
+* `apply_diff` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
+* `StringDiffAlgorithm` provides two methods `diff` which gives you a transformation vector from the first to second string. The `distance` method gives you the edit distance from the frist argument to the second argument. The structs `HammingDistance` and `LevenshteinDistance` have their own implementations for each method.
+
+## Examples
+
+Getting the edit distance between two words using Levenshtein algorithm 
+```rs
+use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
+
+fn main(){
+    let my_levensthein = LevenshteinDistance {};
+
+    let edit_distance = my_levensthein.distance("Sitting", "Kitten");
+    
+    assert_eq!(3, edit_distance)
+}
+```
+> **Note**: We are getting the edit distance to get from "Sitting" to "Kitten".
+
+Getting the delta vectors between two words using Levenshtein algorithm 
+```rs
+use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
+
+fn main(){
+    let my_levensthein = LevenshteinDistance {};
+
+    let delta_vec = my_levensthein.diff("Sitting", "Kitten");
+    
+    for i in delta_vec.iter(){
+        println!("{:?}", i);
+    }
+}
+```
+
+This example outputs:
+
+```text
+StringDiffOp { kind: Delete('g'), index: 6 }
+StringDiffOp { kind: Substitute('i', 'e'), index: 4 }
+StringDiffOp { kind: Substitute('S', 'K'), index: 0 }
+```
+
+Getting the edit distance between two words using Hamming algorithm 
+```rs
+use differ_rs::{HammingDistance, StringDiffAlgorithm};
+
+fn main(){
+    let my_hamming = HammingDistance {};
+
+    let edit_distance = my_hamming.distance("karolin", "kathrin");
+    
+    assert_eq!(3, edit_distance);
+}
+```
+Note: We are getting the edit distance to get from "karolin" to "kathrin",
+additionally the first string and second string must be the same length, or
+will cause a panic to be triggered. 
+
+
+Getting the delta vectors between two words using Hamming algorithm 
+```rs
+use differ_rs::{HammingDistance, StringDiffAlgorithm};
+
+fn main(){
+    let my_hamming = HammingDistance {};
+
+    let delta_vec = my_hamming.diff("karolin", "kathrin");
+    
+    for i in delta_vec.iter(){
+        println!("{:?}", i);
+    }
+}
+```
+This example outputs:
+
+```text
+StringDiffOp { kind: Substitute('r', 't'), index: 2 }
+StringDiffOp { kind: Substitute('o', 'h'), index: 3 }
+StringDiffOp { kind: Substitute('l', 'r'), index: 4 }
+```
+
+Applying delta vectors to words
+```rs
+use differ_rs::{HammingDistance, LevenshteinDistance, StringDiffAlgorithm,apply_diff};
+
+fn main(){
+    let my_levensthein = LevenshteinDistance {};
+    let levensthein_delta_vec = my_levensthein.diff("sitting", "kitten");
+    let delta_applied_v1 = apply_diff("sitting", levensthein_delta_vec);
+
+    let my_hamming = HammingDistance {};
+    let hamming_delta_vec = my_hamming.diff("karolin", "kathrin");
+    let delta_applied_v2 = apply_diff("karolin", hamming_delta_vec);
+
+    assert_eq!("kitten", delta_applied_v1);
+    assert_eq!("kathrin", delta_applied_v2);
+}
 ```
 
 ## License
