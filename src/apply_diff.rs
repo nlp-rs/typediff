@@ -36,13 +36,6 @@ pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 #[cfg(test)]
 mod dcode_tests {
 
-	fn vec_compare(va: &Vec<StringDiffOp>, vb: &Vec<StringDiffOp>) -> bool {
-		(va.len() == vb.len()) &&  // zip stops at the shortest
-        va.iter()
-        .zip(vb)
-        .all(|(a,b)| a == b)
-	}
-
     use crate::{StringDiffOp,StringDiffOpKind};
 
 	#[test]
