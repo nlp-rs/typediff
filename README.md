@@ -27,6 +27,7 @@ differ-rs = "0.0.0"
 Getting the edit distance between two words using Levenshtein algorithm 
 ```rs
 use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
+
 fn main(){
     let my_levensthein = LevenshteinDistance {};
 
@@ -35,11 +36,12 @@ fn main(){
     assert_eq!(3, edit_distance)
 }
 ```
->Note: We are getting the edit distance to get from "Sitting" to "Kitten".
+> **Note**: We are getting the edit distance to get from "Sitting" to "Kitten".
 
 Getting the delta vectors between two words using Levenshtein algorithm 
 ```rs
 use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
+
 fn main(){
     let my_levensthein = LevenshteinDistance {};
 
@@ -62,6 +64,7 @@ StringDiffOp { kind: Substitute('S', 'K'), index: 0 }
 Getting the edit distance between two words using Hamming algorithm 
 ```rs
 use differ_rs::{HammingDistance, StringDiffAlgorithm};
+
 fn main(){
     let my_hamming = HammingDistance {};
 
@@ -78,6 +81,7 @@ will cause a panic to be triggered.
 Getting the delta vectors between two words using Hamming algorithm 
 ```rs
 use differ_rs::{HammingDistance, StringDiffAlgorithm};
+
 fn main(){
     let my_hamming = HammingDistance {};
 
@@ -99,6 +103,7 @@ StringDiffOp { kind: Substitute('l', 'r'), index: 4 }
 Applying delta vectors to words
 ```rs
 use differ_rs::{HammingDistance, LevenshteinDistance, StringDiffAlgorithm,apply_diff};
+
 fn main(){
     let my_levensthein = LevenshteinDistance {};
     let levensthein_delta_vec = my_levensthein.diff("sitting", "kitten");
