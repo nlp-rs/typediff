@@ -1,4 +1,5 @@
 #![doc = include_str!("../README.md")]
+
 mod apply_diff;
 pub use crate::apply_diff::apply_diff;
 mod hamming;

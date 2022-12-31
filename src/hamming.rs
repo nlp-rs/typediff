@@ -27,16 +27,8 @@ impl StringDiffAlgorithm for HammingDistance {
 }
 
 #[cfg(test)]
-mod dcode_tests {
-
-	fn vec_compare(va: &Vec<StringDiffOp>, vb: &Vec<StringDiffOp>) -> bool {
-		(va.len() == vb.len()) &&  // zip stops at the shortest
-        va.iter()
-        .zip(vb)
-        .all(|(a,b)| a == b)
-	}
-
-	use crate::{HammingDistance, StringDiffAlgorithm, StringDiffOp};
+mod tests {
+	use crate::{StringDiffAlgorithm, StringDiffOp};
 
 	#[test]
 	fn test_hamming_distance_edit_distance() {
@@ -80,25 +72,10 @@ mod dcode_tests {
 		test_vec_5.push(StringDiffOp::new_substitute('7', '3', 2));
 		test_vec_5.push(StringDiffOp::new_substitute('8', '7', 4));
 
-		assert_eq!(
-			vec_compare(&test_vec, &test_struct.diff("karolin", "kathrin")),
-			true
-		);
-		assert_eq!(
-			vec_compare(&test_vec_2, &test_struct.diff("karolin", "kerstin")),
-			true
-		);
-		assert_eq!(
-			vec_compare(&test_vec_3, &test_struct.diff("kathrin", "kerstin")),
-			true
-		);
-		assert_eq!(
-			vec_compare(&test_vec_4, &test_struct.diff("0000", "1111")),
-			true
-		);
-		assert_eq!(
-			vec_compare(&test_vec_5, &test_struct.diff("2173896", "2233796")),
-			true
-		);
+		assert_eq!(&test_vec, &test_struct.diff("karolin", "kathrin"));
+		assert_eq!(&test_vec_2, &test_struct.diff("karolin", "kerstin"));
+		assert_eq!(&test_vec_3, &test_struct.diff("kathrin", "kerstin"));
+		assert_eq!(&test_vec_4, &test_struct.diff("0000", "1111"));
+		assert_eq!(&test_vec_5, &test_struct.diff("2173896", "2233796"));
 	}
 }

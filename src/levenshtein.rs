@@ -1,12 +1,9 @@
 use crate::{StringDiffAlgorithm, StringDiffOp};
 use core::panic;
-use std::cmp;
 
 pub struct LevenshteinDistance {}
+
 impl LevenshteinDistance {
-	pub(crate) fn min_dist(x: usize, y: usize, z: usize) -> usize {
-		cmp::min(x, cmp::min(y, z))
-	}
 	/// At a given (x,y) we must choose the minimum value between a cells
 	/// Top, Left, and Diagonal value. Depending on which cell is chosen between
 	/// the three it will tell us if its a deletion, insertion or substitution operation.
@@ -27,11 +24,6 @@ impl LevenshteinDistance {
 		unreachable!()
 	}
 
-	pub(crate) fn print_vector<T: std::fmt::Debug>(my_vector: &[T]) {
-		for i in my_vector.iter() {
-			println!("{:?}", i);
-		}
-	}
 	pub(crate) fn reverse_vec_and_indexes(
 		my_vec: &mut Vec<StringDiffOp>,
 		mut top_string_len: usize,
@@ -42,6 +34,7 @@ impl LevenshteinDistance {
 			top_string_len += 1;
 		}
 	}
+
 	pub(crate) fn get_operations(
 		my_opp: &Vec<Vec<char>>,
 		left_string: &str,
@@ -114,6 +107,7 @@ impl LevenshteinDistance {
 
 		diff_ops
 	}
+
 	pub(crate) fn get_operation_matrix(s1: &str, s2: &str) -> Vec<Vec<char>> {
 		let first_string_len: usize = s1.len();
 		let second_string_len: usize = s2.len();
@@ -155,11 +149,13 @@ impl LevenshteinDistance {
 		dir_vector
 	}
 }
+
 impl StringDiffAlgorithm for LevenshteinDistance {
 	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp> {
 		let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
 		LevenshteinDistance::get_operations(&dir_matrix, s2, s1)
 	}
+
 	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize {
 		let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
 		LevenshteinDistance::get_operations(&dir_matrix, s2, s1).len()
@@ -167,16 +163,8 @@ impl StringDiffAlgorithm for LevenshteinDistance {
 }
 
 #[cfg(test)]
-mod dcode_tests {
-
-	fn vec_compare(va: &Vec<StringDiffOp>, vb: &Vec<StringDiffOp>) -> bool {
-		(va.len() == vb.len()) &&  // zip stops at the shortest
-        va.iter()
-        .zip(vb)
-        .all(|(a,b)| a == b)
-	}
-
-	use crate::{HammingDistance, StringDiffAlgorithm, StringDiffOp};
+mod tests {
+	use crate::{StringDiffAlgorithm, StringDiffOp};
 
 	#[test]
 	fn test_levenshtein_distance_edit_distance() {
@@ -210,21 +198,9 @@ mod dcode_tests {
 		test_vec_4.push(super::StringDiffOp::new_insert('E', 5));
 		test_vec_4.push(super::StringDiffOp::new_insert('R', 6));
 
-		assert_eq!(
-			vec_compare(&test_vec, &test_struct.diff("kitten", "sitting")),
-			true
-		);
-		assert_eq!(
-			vec_compare(&test_vec_2, &test_struct.diff("Saturday", "Sunday")),
-			true
-		);
-		assert_eq!(
-			vec_compare(&test_vec_3, &test_struct.diff("RESET", "SETS")),
-			true
-		);
-		assert_eq!(
-			vec_compare(&test_vec_4, &test_struct.diff("RESET", "RESETER")),
-			true
-		);
+		assert_eq!(&test_vec, &test_struct.diff("kitten", "sitting"));
+		assert_eq!(&test_vec_2, &test_struct.diff("Saturday", "Sunday"));
+		assert_eq!(&test_vec_3, &test_struct.diff("RESET", "SETS"));
+		assert_eq!(&test_vec_4, &test_struct.diff("RESET", "RESETER"));
 	}
 }
