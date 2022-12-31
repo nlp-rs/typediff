@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0 (2022-12-31)
+
+
+### Bug Fixes
+
+* Get rid of duplicate code in `diff()` and `distance()` ([#15](https://github.com/nlp-rs/differ.rs/issues/15)) ([5d35501](https://github.com/nlp-rs/differ.rs/commit/5d35501030512de76b45ce5325a3d14d4afdff67)), closes [#9](https://github.com/nlp-rs/differ.rs/issues/9)
+
 ## 0.1.0 (2022-10-14)
 
 
