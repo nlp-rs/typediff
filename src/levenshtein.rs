@@ -1,6 +1,6 @@
+use crate::{StringDiffAlgorithm, StringDiffOp};
 use core::panic;
 use std::cmp;
-use crate::{StringDiffOp,StringDiffAlgorithm};
 
 pub struct LevenshteinDistance {}
 impl LevenshteinDistance {
@@ -190,8 +190,6 @@ impl StringDiffAlgorithm for LevenshteinDistance {
 	}
 }
 
-
-
 #[cfg(test)]
 mod dcode_tests {
 
@@ -253,5 +251,4 @@ mod dcode_tests {
 			true
 		);
 	}
-
 }

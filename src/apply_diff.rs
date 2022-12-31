@@ -1,4 +1,4 @@
-use crate::{StringDiffOp,StringDiffOpKind};
+use crate::{StringDiffOp, StringDiffOpKind};
 pub(crate) fn remove(start: usize, stop: usize, s: &str) -> String {
 	assert!(stop > start);
 	let mut result = String::from("");
@@ -32,11 +32,10 @@ pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 	new_string.clone()
 }
 
-
 #[cfg(test)]
 mod dcode_tests {
 
-    use crate::{StringDiffOp,StringDiffOpKind};
+	use crate::{StringDiffOp, StringDiffOpKind};
 
 	#[test]
 	fn test_apply_diffs() {

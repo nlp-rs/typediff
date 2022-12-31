@@ -1,12 +1,11 @@
-pub mod apply_diff;
-pub use  crate::apply_diff::{apply_diff};
-pub mod hamming;
-pub use  crate::hamming::{HammingDistance};
-pub mod levenshtein;
-pub use crate::levenshtein::{LevenshteinDistance};
-
-
 #[doc = include_str!("../README.md")]
+mod apply_diff;
+pub use crate::apply_diff::apply_diff;
+mod hamming;
+pub use crate::hamming::HammingDistance;
+mod levenshtein;
+pub use crate::levenshtein::LevenshteinDistance;
+
 #[derive(PartialEq, Eq, Debug)]
 pub enum StringDiffOpKind {
 	Substitute(char, char),
@@ -38,8 +37,6 @@ impl StringDiffOp {
 		Self::new(StringDiffOpKind::Substitute(b, c), index)
 	}
 }
-
-
 
 pub trait StringDiffAlgorithm {
 	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp>;

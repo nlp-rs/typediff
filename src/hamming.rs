@@ -1,4 +1,4 @@
-use crate::{StringDiffOp,StringDiffAlgorithm};
+use crate::{StringDiffAlgorithm, StringDiffOp};
 
 pub struct HammingDistance {}
 impl StringDiffAlgorithm for HammingDistance {
@@ -111,5 +111,4 @@ mod dcode_tests {
 			true
 		);
 	}
-
 }
