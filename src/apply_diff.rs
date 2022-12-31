@@ -1,7 +1,8 @@
 use crate::{StringDiffOp, StringDiffOpKind};
+
 pub(crate) fn remove(start: usize, stop: usize, s: &str) -> String {
 	assert!(stop > start);
-	let mut result = String::from("");
+	let mut result = String::new();
 	for (i, c) in s.chars().enumerate() {
 		if start > i || stop < i + 1 {
 			result.push(c);
@@ -33,9 +34,8 @@ pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 }
 
 #[cfg(test)]
-mod dcode_tests {
-
-	use crate::{StringDiffOp, StringDiffOpKind};
+mod tests {
+	use crate::StringDiffOp;
 
 	#[test]
 	fn test_apply_diffs() {
