@@ -114,7 +114,7 @@ impl LevenshteinDistance {
 
 		diff_ops
 	}
-    pub(crate) fn get_operation_matrix(s1: &str, s2: &str) -> Vec<Vec<char>> {
+	pub(crate) fn get_operation_matrix(s1: &str, s2: &str) -> Vec<Vec<char>> {
 		let first_string_len: usize = s1.len();
 		let second_string_len: usize = s2.len();
 
@@ -152,17 +152,16 @@ impl LevenshteinDistance {
 				); //substitution
 			}
 		}
-        dir_vector
-    }
-
+		dir_vector
+	}
 }
 impl StringDiffAlgorithm for LevenshteinDistance {
 	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp> {
-        let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
+		let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
 		LevenshteinDistance::get_operations(&dir_matrix, s2, s1)
 	}
 	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize {
-        let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
+		let dir_matrix = LevenshteinDistance::get_operation_matrix(s1, s2);
 		LevenshteinDistance::get_operations(&dir_matrix, s2, s1).len()
 	}
 }
