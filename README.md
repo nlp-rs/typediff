@@ -10,7 +10,8 @@ This crate provides edit distance, delta vectors between 2 words, and lets you a
 cargo add differ-rs
 ```
 or, simply add the following string to your Cargo.toml:
-```
+
+```toml
 differ-rs = "0.0.0"
 ```
 
