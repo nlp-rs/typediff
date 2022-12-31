@@ -1,0 +1,12 @@
+/Users/alfredo/Documents/differ.rs/target/debug/deps/anes-08662ebdeb9cf132.rmeta: /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/lib.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/macros.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/attribute.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/buffer.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/color.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/cursor.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/terminal.rs
+
+/Users/alfredo/Documents/differ.rs/target/debug/deps/anes-08662ebdeb9cf132.d: /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/lib.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/macros.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/attribute.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/buffer.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/color.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/cursor.rs /Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/terminal.rs
+
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/lib.rs:
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/macros.rs:
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences.rs:
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/attribute.rs:
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/buffer.rs:
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/color.rs:
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/cursor.rs:
+/Users/alfredo/.cargo/registry/src/github.com-1ecc6299db9ec823/anes-0.1.6/src/sequences/terminal.rs:
