@@ -27,7 +27,7 @@ impl StringDiffAlgorithm for HammingDistance {
 }
 
 #[cfg(test)]
-mod dcode_tests {
+mod tests {
 
 	fn vec_compare(va: &Vec<StringDiffOp>, vb: &Vec<StringDiffOp>) -> bool {
 		(va.len() == vb.len()) &&  // zip stops at the shortest

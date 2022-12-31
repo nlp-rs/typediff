@@ -33,7 +33,7 @@ pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 }
 
 #[cfg(test)]
-mod dcode_tests {
+mod tests {
 
 	use crate::{StringDiffOp, StringDiffOpKind};
 
