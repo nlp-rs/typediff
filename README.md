@@ -1,13 +1,13 @@
 # differ.rs
 
-A natural language processing library, written in Rust.
+Differ.rs is a collection of natural langauge processing crates, all written in Rust.
 
 # *Brief overview*
 ### Crates
- - [x]  Differ:
+ - [x] [`differ`](./crates/differ): Provides edit distance, delta vectors between 2 words, and word transformation 
    - [x]  `apply_diff`: Allows users to apply delta vectors in order to transform a words.
    - [x]  `extra_traits`: all `struct`s implemented in `differ-rs` are `HammingDistance` and `LevenshteinDistance`. Each Struct implements the `diff` and `distance` methods.
- - [ ] Bio_Differ
+ - [ ] `bio_dif`: Proivdes functions in order to to align protein or nucleotide sequences.
 
 
 
