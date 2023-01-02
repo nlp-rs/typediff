@@ -39,20 +39,23 @@ mod tests {
 
 	#[test]
 	fn test_apply_diffs() {
-		let mut test_vec: Vec<StringDiffOp> = Vec::new();
-		test_vec.push(StringDiffOp::new_insert('g', 0));
-		test_vec.push(StringDiffOp::new_substitute('e', 'i', 4));
-		test_vec.push(StringDiffOp::new_substitute('k', 's', 0));
+		let test_vec: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_insert('g', 0),
+			StringDiffOp::new_substitute('e', 'i', 4),
+			StringDiffOp::new_substitute('k', 's', 0),
+		];
 
-		let mut test_vec_2: Vec<StringDiffOp> = Vec::new();
-		test_vec_2.push(StringDiffOp::new_substitute('r', 'n', 4));
-		test_vec_2.push(StringDiffOp::new_delete('t', 2));
-		test_vec_2.push(StringDiffOp::new_delete('a', 1));
+		let test_vec_2: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_substitute('r', 'n', 4),
+			StringDiffOp::new_delete('t', 2),
+			StringDiffOp::new_delete('a', 1),
+		];
 
-		let mut test_vec_3: Vec<StringDiffOp> = Vec::new();
-		test_vec_3.push(StringDiffOp::new_insert('S', 5));
-		test_vec_3.push(StringDiffOp::new_delete('E', 1));
-		test_vec_3.push(StringDiffOp::new_delete('R', 0));
+		let test_vec_3: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_insert('S', 5),
+			StringDiffOp::new_delete('E', 1),
+			StringDiffOp::new_delete('R', 0),
+		];
 
 		assert_eq!(
 			String::from("sitting"),

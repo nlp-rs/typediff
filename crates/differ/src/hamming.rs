@@ -43,32 +43,37 @@ mod tests {
 	fn test_hamming_distance_op_distance() {
 		let test_struct = super::HammingDistance {};
 
-		let mut test_vec: Vec<StringDiffOp> = Vec::new();
-		test_vec.push(StringDiffOp::new_substitute('r', 't', 2));
-		test_vec.push(StringDiffOp::new_substitute('o', 'h', 3));
-		test_vec.push(StringDiffOp::new_substitute('l', 'r', 4));
+		let test_vec: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_substitute('r', 't', 2),
+			StringDiffOp::new_substitute('o', 'h', 3),
+			StringDiffOp::new_substitute('l', 'r', 4),
+		];
 
-		let mut test_vec_2: Vec<StringDiffOp> = Vec::new();
-		test_vec_2.push(StringDiffOp::new_substitute('a', 'e', 1));
-		test_vec_2.push(StringDiffOp::new_substitute('o', 's', 3));
-		test_vec_2.push(StringDiffOp::new_substitute('l', 't', 4));
+		let test_vec_2: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_substitute('a', 'e', 1),
+			StringDiffOp::new_substitute('o', 's', 3),
+			StringDiffOp::new_substitute('l', 't', 4),
+		];
 
-		let mut test_vec_3: Vec<StringDiffOp> = Vec::new();
-		test_vec_3.push(StringDiffOp::new_substitute('a', 'e', 1));
-		test_vec_3.push(StringDiffOp::new_substitute('t', 'r', 2));
-		test_vec_3.push(StringDiffOp::new_substitute('h', 's', 3));
-		test_vec_3.push(StringDiffOp::new_substitute('r', 't', 4));
+		let test_vec_3: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_substitute('a', 'e', 1),
+			StringDiffOp::new_substitute('t', 'r', 2),
+			StringDiffOp::new_substitute('h', 's', 3),
+			StringDiffOp::new_substitute('r', 't', 4),
+		];
 
-		let mut test_vec_4: Vec<StringDiffOp> = Vec::new();
-		test_vec_4.push(StringDiffOp::new_substitute('0', '1', 0));
-		test_vec_4.push(StringDiffOp::new_substitute('0', '1', 1));
-		test_vec_4.push(StringDiffOp::new_substitute('0', '1', 2));
-		test_vec_4.push(StringDiffOp::new_substitute('0', '1', 3));
+		let test_vec_4: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_substitute('0', '1', 0),
+			StringDiffOp::new_substitute('0', '1', 1),
+			StringDiffOp::new_substitute('0', '1', 2),
+			StringDiffOp::new_substitute('0', '1', 3),
+		];
 
-		let mut test_vec_5: Vec<StringDiffOp> = Vec::new();
-		test_vec_5.push(StringDiffOp::new_substitute('1', '2', 1));
-		test_vec_5.push(StringDiffOp::new_substitute('7', '3', 2));
-		test_vec_5.push(StringDiffOp::new_substitute('8', '7', 4));
+		let test_vec_5: Vec<StringDiffOp> = vec![
+			StringDiffOp::new_substitute('1', '2', 1),
+			StringDiffOp::new_substitute('7', '3', 2),
+			StringDiffOp::new_substitute('8', '7', 4),
+		];
 
 		assert_eq!(&test_vec, &test_struct.diff("karolin", "kathrin"));
 		assert_eq!(&test_vec_2, &test_struct.diff("karolin", "kerstin"));
