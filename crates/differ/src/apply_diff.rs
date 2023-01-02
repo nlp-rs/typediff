@@ -16,7 +16,7 @@ pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 
 	for i in diffs.iter() {
 		match i.kind {
-			StringDiffOpKind::Delete(_x) => {
+			StringDiffOpKind::Delete => {
 				new_string = remove(i.index, i.index + 1, &new_string);
 			}
 			StringDiffOpKind::Insert(_x) => {
@@ -25,7 +25,7 @@ pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 			StringDiffOpKind::Substitute(_x, _y) => {
 				new_string.replace_range((i.index)..(i.index + 1), &_y.to_string())
 			}
-			StringDiffOpKind::Transpose(_x, _y) => {
+			StringDiffOpKind::Transpose => {
 				panic!("apply_diff does not currently support the transpose operation yet")
 			}
 		}
@@ -47,14 +47,14 @@ mod tests {
 
 		let test_vec_2: Vec<StringDiffOp> = vec![
 			StringDiffOp::new_substitute('r', 'n', 4),
-			StringDiffOp::new_delete('t', 2),
-			StringDiffOp::new_delete('a', 1),
+			StringDiffOp::new_delete(2),
+			StringDiffOp::new_delete(1),
 		];
 
 		let test_vec_3: Vec<StringDiffOp> = vec![
 			StringDiffOp::new_insert('S', 5),
-			StringDiffOp::new_delete('E', 1),
-			StringDiffOp::new_delete('R', 0),
+			StringDiffOp::new_delete(1),
+			StringDiffOp::new_delete(0),
 		];
 
 		assert_eq!(
