@@ -1,24 +1,22 @@
 use crate::{StringDiffAlgorithm, StringDiffOp};
+use std::iter::zip;
 
 pub struct HammingDistance {}
 impl StringDiffAlgorithm for HammingDistance {
 	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp> {
 		if s1.len() != s2.len() {
 			panic!("Strings must be same length");
-		} else {
-			let mut opp_vec: Vec<StringDiffOp> = Vec::new();
-			for i in 0..s1.len() {
-				if s1.chars().nth(i).unwrap() != s2.chars().nth(i).unwrap() {
-					let new_opp = StringDiffOp::new_substitute(
-						s1.chars().nth(i).unwrap(),
-						s2.chars().nth(i).unwrap(),
-						i,
-					);
-					opp_vec.push(new_opp)
-				}
-			}
-			opp_vec
 		}
+
+		let mut opp_vec: Vec<StringDiffOp> = Vec::new();
+		let iter = zip(s1.chars(), s2.chars());
+
+		for (i, (char1, char2)) in iter.enumerate() {
+			if char1 != char2 {
+				opp_vec.push(StringDiffOp::new_substitute(char1, char2, i));
+			}
+		}
+		opp_vec
 	}
 
 	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize {
