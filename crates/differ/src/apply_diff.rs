@@ -19,9 +19,7 @@ pub fn apply_diff(s: &str, diffs: Vec<StringDiffOp>) -> String {
 			StringDiffOpKind::Delete(_x) => {
 				new_string = remove(i.index, i.index + 1, &new_string);
 			}
-			StringDiffOpKind::Insert(_x) => {
-				new_string.push(_x);
-			}
+			StringDiffOpKind::Insert(_x) => new_string.insert(i.index, _x),
 			StringDiffOpKind::Substitute(_x, _y) => {
 				new_string.replace_range((i.index)..(i.index + 1), &_y.to_string())
 			}
@@ -40,7 +38,7 @@ mod tests {
 	#[test]
 	fn test_apply_diffs() {
 		let test_vec: Vec<StringDiffOp> = vec![
-			StringDiffOp::new_insert('g', 0),
+			StringDiffOp::new_insert('g', 6),
 			StringDiffOp::new_substitute('e', 'i', 4),
 			StringDiffOp::new_substitute('k', 's', 0),
 		];
@@ -57,6 +55,16 @@ mod tests {
 			StringDiffOp::new_delete('R', 0),
 		];
 
+		let test_vec_4 = vec![
+			StringDiffOp::new_insert('e', 1),
+			StringDiffOp::new_insert('o', 3),
+		];
+
+		let test_vec_5 = vec![
+			StringDiffOp::new_insert('r', 4),
+			StringDiffOp::new_insert('s', 0),
+		];
+
 		assert_eq!(
 			String::from("sitting"),
 			super::apply_diff("kitten", test_vec)
@@ -66,5 +74,10 @@ mod tests {
 			super::apply_diff("Saturday", test_vec_2)
 		);
 		assert_eq!(String::from("SETS"), super::apply_diff("RESET", test_vec_3));
+		assert_eq!(String::from("heeoy"), super::apply_diff("hey", test_vec_4));
+		assert_eq!(
+			String::from("skater"),
+			super::apply_diff("kate", test_vec_5)
+		);
 	}
 }
