@@ -11,8 +11,8 @@ pub use crate::levenshtein::LevenshteinDistance;
 pub enum StringDiffOpKind {
 	Substitute(char, char),
 	Insert(char),
-	Delete(char),
-	Transpose(usize, usize),
+	Delete,
+	Transpose,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -26,8 +26,8 @@ impl StringDiffOp {
 		Self { kind, index }
 	}
 
-	pub fn new_delete(c: char, index: usize) -> Self {
-		Self::new(StringDiffOpKind::Delete(c), index)
+	pub fn new_delete(index: usize) -> Self {
+		Self::new(StringDiffOpKind::Delete, index)
 	}
 
 	pub fn new_insert(c: char, index: usize) -> Self {

@@ -90,10 +90,7 @@ impl LevenshteinDistance {
 						Self::reverse_vec_and_indexes(&mut diff_ops, top_str_len)
 					}
 
-					let deletion_op = StringDiffOp::new_delete(
-						top_string.chars().nth(top_str_len - 1).unwrap(),
-						top_str_len - 1,
-					);
+					let deletion_op = StringDiffOp::new_delete(top_str_len - 1);
 
 					top_str_len -= 1;
 					diff_ops.push(deletion_op);
@@ -187,14 +184,14 @@ mod tests {
 
 		let test_vec_2: Vec<StringDiffOp> = vec![
 			super::StringDiffOp::new_substitute('r', 'n', 4),
-			super::StringDiffOp::new_delete('t', 2),
-			super::StringDiffOp::new_delete('a', 1),
+			super::StringDiffOp::new_delete(2),
+			super::StringDiffOp::new_delete(1),
 		];
 
 		let test_vec_3: Vec<StringDiffOp> = vec![
 			super::StringDiffOp::new_insert('S', 5),
-			super::StringDiffOp::new_delete('E', 1),
-			super::StringDiffOp::new_delete('R', 0),
+			super::StringDiffOp::new_delete(1),
+			super::StringDiffOp::new_delete(0),
 		];
 
 		let test_vec_4: Vec<StringDiffOp> = vec![
