@@ -90,9 +90,7 @@ impl LevenshteinDistance {
 						Self::reverse_vec_and_indexes(&mut diff_ops, top_str_len)
 					}
 
-					let deletion_op = StringDiffOp::new_delete(
-						top_str_len - 1,
-					);
+					let deletion_op = StringDiffOp::new_delete(top_str_len - 1);
 
 					top_str_len -= 1;
 					diff_ops.push(deletion_op);
