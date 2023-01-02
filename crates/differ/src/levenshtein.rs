@@ -179,24 +179,28 @@ mod tests {
 	fn test_levenshtein_distance_op_distance() {
 		let test_struct = super::LevenshteinDistance {};
 
-		let mut test_vec: Vec<StringDiffOp> = Vec::new();
-		test_vec.push(super::StringDiffOp::new_insert('g', 6));
-		test_vec.push(super::StringDiffOp::new_substitute('e', 'i', 4));
-		test_vec.push(super::StringDiffOp::new_substitute('k', 's', 0));
+		let test_vec: Vec<StringDiffOp> = vec![
+			super::StringDiffOp::new_insert('g', 6),
+			super::StringDiffOp::new_substitute('e', 'i', 4),
+			super::StringDiffOp::new_substitute('k', 's', 0),
+		];
 
-		let mut test_vec_2: Vec<StringDiffOp> = Vec::new();
-		test_vec_2.push(super::StringDiffOp::new_substitute('r', 'n', 4));
-		test_vec_2.push(super::StringDiffOp::new_delete('t', 2));
-		test_vec_2.push(super::StringDiffOp::new_delete('a', 1));
+		let test_vec_2: Vec<StringDiffOp> = vec![
+			super::StringDiffOp::new_substitute('r', 'n', 4),
+			super::StringDiffOp::new_delete('t', 2),
+			super::StringDiffOp::new_delete('a', 1),
+		];
 
-		let mut test_vec_3: Vec<StringDiffOp> = Vec::new();
-		test_vec_3.push(super::StringDiffOp::new_insert('S', 5));
-		test_vec_3.push(super::StringDiffOp::new_delete('E', 1));
-		test_vec_3.push(super::StringDiffOp::new_delete('R', 0));
+		let test_vec_3: Vec<StringDiffOp> = vec![
+			super::StringDiffOp::new_insert('S', 5),
+			super::StringDiffOp::new_delete('E', 1),
+			super::StringDiffOp::new_delete('R', 0),
+		];
 
-		let mut test_vec_4: Vec<StringDiffOp> = Vec::new();
-		test_vec_4.push(super::StringDiffOp::new_insert('E', 5));
-		test_vec_4.push(super::StringDiffOp::new_insert('R', 6));
+		let test_vec_4: Vec<StringDiffOp> = vec![
+			super::StringDiffOp::new_insert('E', 5),
+			super::StringDiffOp::new_insert('R', 6),
+		];
 
 		assert_eq!(&test_vec, &test_struct.diff("kitten", "sitting"));
 		assert_eq!(&test_vec_2, &test_struct.diff("Saturday", "Sunday"));
