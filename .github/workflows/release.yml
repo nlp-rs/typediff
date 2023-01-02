@@ -13,3 +13,5 @@ jobs:
         with:
           release-type: rust
           package-name: nlp-rs-rust-template
+          plugins:
+            - 'cargo-workspace'
