@@ -1,13 +1,16 @@
 #![doc = include_str!("../README.md")]
-
 mod apply_diff;
 pub use crate::apply_diff::apply_diff;
 mod hamming;
-pub use crate::hamming::HammingDistance;
+pub use crate::hamming::hamming;
 mod levenshtein;
-pub use crate::levenshtein::LevenshteinDistance;
+pub use crate::levenshtein::levenshtein;
+mod diff_score;
+pub use crate::diff_score::DiffScoreConfig;
+mod diff;
+pub use crate::diff::Diff;
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Clone)]
 pub enum StringDiffOpKind {
 	Substitute(char, char),
 	Insert(char),
@@ -15,7 +18,7 @@ pub enum StringDiffOpKind {
 	Transpose,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct StringDiffOp {
 	pub kind: StringDiffOpKind,
 	pub index: usize,
@@ -39,7 +42,50 @@ impl StringDiffOp {
 	}
 }
 
-pub trait StringDiffAlgorithm {
-	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp>;
-	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize;
+pub(crate) fn get_operation_matrix(
+	s1: &str,
+	s2: &str,
+	dist_with_dir: fn(isize, isize, isize) -> (isize, char),
+	init_vec: fn(&mut Vec<Vec<isize>>, usize, usize),
+	char_match: isize,
+	not_char_match: isize,
+	indent_cost: isize,
+) -> Vec<Vec<char>> {
+	let first_string_len: usize = s1.len();
+	let second_string_len: usize = s2.len();
+
+	let mut dist_vector = vec![vec![0isize; first_string_len + 1]; second_string_len + 1];
+	let mut dir_vector: Vec<Vec<char>> =
+		vec![vec![' '; first_string_len + 1]; second_string_len + 1];
+
+	init_vec(
+		&mut dist_vector,
+		first_string_len + 1,
+		second_string_len + 1,
+	);
+
+	dir_vector[0][0] = '\\';
+	for j in 1..second_string_len + 1 {
+		dir_vector[j][0] = '^';
+	}
+	for i in 1..first_string_len + 1 {
+		dir_vector[0][i] = '<';
+	}
+
+	for i in 1..second_string_len + 1 {
+		for j in 1..first_string_len + 1 {
+			let diagnal_gap_cost: isize;
+			if s1.chars().nth(j - 1).unwrap() == s2.chars().nth(i - 1).unwrap() {
+				diagnal_gap_cost = char_match;
+			} else {
+				diagnal_gap_cost = not_char_match;
+			}
+			(dist_vector[i][j], dir_vector[i][j]) = dist_with_dir(
+				dist_vector[i - 1][j] + indent_cost, //deletion
+				dist_vector[i][j - 1] + indent_cost, //insertion
+				dist_vector[i - 1][j - 1] + diagnal_gap_cost,
+			); //substitution
+		}
+	}
+	dir_vector
 }
