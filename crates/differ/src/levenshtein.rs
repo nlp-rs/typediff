@@ -1,5 +1,4 @@
-use crate::diff::Diff;
-use crate::{get_operation_matrix, StringDiffOp};
+use crate::{get_operation_matrix, Diff, StringDiffOp};
 use core::panic;
 
 pub(crate) fn reverse_vec_and_indexes(my_vec: &mut Vec<StringDiffOp>, mut top_string_len: usize) {
@@ -124,8 +123,8 @@ mod tests {
 
 	#[test]
 	fn test_levenshtein_distance_op_distance() {
-		use crate::diff::Diff;
 		use crate::levenshtein::levenshtein;
+		use crate::Diff;
 
 		let test_diff = Diff {
 			ops: Box::new([

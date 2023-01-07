@@ -5,10 +5,6 @@ mod hamming;
 pub use crate::hamming::hamming;
 mod levenshtein;
 pub use crate::levenshtein::levenshtein;
-mod diff_score;
-pub use crate::diff_score::DiffScoreConfig;
-mod diff;
-pub use crate::diff::Diff;
 
 #[derive(PartialEq, Eq, Debug, Clone)]
 pub enum StringDiffOpKind {
@@ -39,6 +35,25 @@ impl StringDiffOp {
 
 	pub fn new_substitute(b: char, c: char, index: usize) -> Self {
 		Self::new(StringDiffOpKind::Substitute(b, c), index)
+	}
+}
+
+#[derive(Debug, PartialEq, Eq)]
+pub struct Diff {
+	pub ops: Box<[StringDiffOp]>,
+	pub total_len: usize,
+}
+
+impl Diff {
+	pub fn new(diffs: Vec<StringDiffOp>, total_len: usize) -> Self {
+		Self {
+			ops: diffs.into_boxed_slice(),
+			total_len: total_len,
+		}
+	}
+
+	pub fn distance(&self) -> usize {
+		self.ops.len()
 	}
 }
 
@@ -74,16 +89,16 @@ pub(crate) fn get_operation_matrix(
 
 	for i in 1..second_string_len + 1 {
 		for j in 1..first_string_len + 1 {
-			let diagnal_gap_cost: isize;
+			let diagonal_gap_cost: isize;
 			if s1.chars().nth(j - 1).unwrap() == s2.chars().nth(i - 1).unwrap() {
-				diagnal_gap_cost = char_match;
+				diagonal_gap_cost = char_match;
 			} else {
-				diagnal_gap_cost = not_char_match;
+				diagonal_gap_cost = not_char_match;
 			}
 			(dist_vector[i][j], dir_vector[i][j]) = dist_with_dir(
 				dist_vector[i - 1][j] + indent_cost, //deletion
 				dist_vector[i][j - 1] + indent_cost, //insertion
-				dist_vector[i - 1][j - 1] + diagnal_gap_cost,
+				dist_vector[i - 1][j - 1] + diagonal_gap_cost,
 			); //substitution
 		}
 	}

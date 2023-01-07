@@ -1,5 +1,4 @@
-use crate::diff::Diff;
-use crate::StringDiffOp;
+use crate::{Diff, StringDiffOp};
 use std::iter::zip;
 
 pub fn hamming<'a>(s1: &'a str, s2: &'a str) -> Diff {
@@ -24,8 +23,8 @@ mod tests {
 
 	#[test]
 	fn test_hamming_distance_op_distance() {
-		use crate::diff::Diff;
 		use crate::hamming::hamming;
+		use crate::Diff;
 
 		let test_diff = Diff {
 			ops: Box::new([

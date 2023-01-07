@@ -16,14 +16,14 @@ differ-rs = "0.0.0"
 ```
 
 ## Features
-* `apply_diff` function: Allows users to apply deltas in order to transform a words.
 * `Diff` struct: Contains a Box<> of operations between two strings. Also keeps track of length of longest string. Has methods that allows users to get the edit distance between two words, and view delta operations. 
-* `levenshtein` function: Returns a Diff struct between string 1 and string 2 using levenshtein algorithm. 
-* `hamming` function: Returns a Diff struct between string 1 and string 2 hamming algorithm. 
-
+* `apply_diff()`: Allows users to apply deltas in order to transform a words.
+* `levenshtein()`: Returns a Diff struct between string 1 and string 2. Levenshtein algorithm can detect insertions, deletions, and substitutions. 
+* `hamming()`: Returns a Diff struct between string 1 and string 2. Hamming algorithm can only detect substitutions, and string 1 and string 2 must me equal length.
+  
 ## How it works
-* `apply_diff` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
-* `Diff` works by hodling a Box<> of operations, and longest length between any two strings. Both the `levenshtein`, `hamming` algorithm return this struct.
+* `apply_diff()` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
+* `Diff` holds a `Box<StringDiffOp>`, and the longest length of any two strings. Both `levenshtein()`, and `hamming()`  eturn this struct.
 
 ## Examples
 
@@ -32,7 +32,7 @@ Getting the edit distance between two words using Levenshtein algorithm
 use differ_rs::levenshtein;
 
 fn main(){
-	let levensthein_edit_distance = levenshtein("Sitting", "Kitten").distance();
+    let levensthein_edit_distance = levenshtein("Sitting", "Kitten").distance();
 
     assert_eq!(3, levensthein_edit_distance);
 }
@@ -44,9 +44,11 @@ To view the delta between two words using Levenshtein algorithm
 use differ_rs::levenshtein;
 
 fn main(){
-	let my_levensthein = levenshtein("Sitting", "Kitten");
+    let my_levensthein = levenshtein("Sitting", "Kitten");
 
-    my_levensthein.operations();
+    for diff_op in my_levensthein.ops.iter() {
+        println!("{:?}", diff_op);
+    }
 }
 ```
 
@@ -80,9 +82,10 @@ use differ_rs::hamming;
 fn main(){
 	let kathrin_edit_distance = hamming("karolin", "kathrin");
 
-    kathrin_edit_distance.operations();
+    for diff_op in kathrin_edit_distance.ops.iter() {
+		println!("{:?}", diff_op);
+	}
 }
-
 ```
 This example outputs:
 
@@ -98,16 +101,15 @@ use differ_rs::{hamming, levenshtein, apply_diff};
 
 fn main(){
     let my_levensthein = levenshtein("sitting", "kitten");
-    let delta_applied_v1 = apply_diff("sitting", &my_levensthein.ops);
+    let delta_applied_v1 = apply_diff("sitting", my_levensthein.ops.to_vec());
 
 
     let my_hamming = hamming("karolin", "kathrin");
-    let delta_applied_v2 = apply_diff("karolin", &my_hamming.ops);
+    let delta_applied_v2 = apply_diff("karolin", my_hamming.ops.to_vec());
 
     assert_eq!("kitten", delta_applied_v1);
     assert_eq!("kathrin", delta_applied_v2);
 }
-
 ```
 
 ## License
