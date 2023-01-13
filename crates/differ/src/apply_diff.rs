@@ -37,47 +37,50 @@ mod tests {
 
 	#[test]
 	fn test_apply_diffs() {
-		let test_vec: Vec<StringDiffOp> = vec![
+		let test_box: Box<[StringDiffOp]> = Box::new([
 			StringDiffOp::new_insert('g', 6),
 			StringDiffOp::new_substitute('e', 'i', 4),
 			StringDiffOp::new_substitute('k', 's', 0),
-		];
+		]);
 
-		let test_vec_2: Vec<StringDiffOp> = vec![
+		let test_box_2: Box<[StringDiffOp]> = Box::new([
 			StringDiffOp::new_substitute('r', 'n', 4),
 			StringDiffOp::new_delete(2),
 			StringDiffOp::new_delete(1),
-		];
+		]);
 
-		let test_vec_3: Vec<StringDiffOp> = vec![
+		let test_box_3: Box<[StringDiffOp]> = Box::new([
 			StringDiffOp::new_insert('S', 5),
 			StringDiffOp::new_delete(1),
 			StringDiffOp::new_delete(0),
-		];
+		]);
 
-		let test_vec_4 = vec![
+		let test_box_4: Box<[StringDiffOp]> = Box::new([
 			StringDiffOp::new_insert('e', 1),
 			StringDiffOp::new_insert('o', 3),
-		];
+		]);
 
-		let test_vec_5 = vec![
+		let test_box_5: Box<[StringDiffOp]> = Box::new([
 			StringDiffOp::new_insert('r', 4),
 			StringDiffOp::new_insert('s', 0),
-		];
+		]);
 
 		assert_eq!(
 			String::from("sitting"),
-			super::apply_diff("kitten", test_vec)
+			super::apply_diff("kitten", test_box.to_vec())
 		);
 		assert_eq!(
 			String::from("Sunday"),
-			super::apply_diff("Saturday", test_vec_2)
+			super::apply_diff("Saturday", test_box_2.to_vec())
 		);
-		assert_eq!(String::from("SETS"), super::apply_diff("RESET", test_vec_3));
-		assert_eq!(String::from("heeoy"), super::apply_diff("hey", test_vec_4));
+		assert_eq!(
+			String::from("SETS"),
+			super::apply_diff("RESET", test_box_3.to_vec())
+		);
+		assert_eq!(String::from("heeoy"), super::apply_diff("hey", test_box_4.to_vec()));
 		assert_eq!(
 			String::from("skater"),
-			super::apply_diff("kate", test_vec_5)
+			super::apply_diff("kate", test_box_5.to_vec())
 		);
 	}
 }

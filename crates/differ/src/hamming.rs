@@ -1,84 +1,82 @@
-use crate::{StringDiffAlgorithm, StringDiffOp};
+use crate::{Diff, StringDiffOp};
 use std::iter::zip;
 
-pub struct HammingDistance {}
-impl StringDiffAlgorithm for HammingDistance {
-	fn diff<'a>(&self, s1: &'a str, s2: &'a str) -> Vec<StringDiffOp> {
-		if s1.len() != s2.len() {
-			panic!("Strings must be same length");
-		}
-
-		let mut opp_vec: Vec<StringDiffOp> = Vec::new();
-		let iter = zip(s1.chars(), s2.chars());
-
-		for (i, (char1, char2)) in iter.enumerate() {
-			if char1 != char2 {
-				opp_vec.push(StringDiffOp::new_substitute(char1, char2, i));
-			}
-		}
-		opp_vec
+pub fn hamming<'a>(s1: &'a str, s2: &'a str) -> Diff {
+	if s1.len() != s2.len() {
+		panic!("Strings must be same length");
 	}
 
-	fn distance<'a>(&self, s1: &'a str, s2: &'a str) -> usize {
-		self.diff(s1, s2).len()
+	let mut opp_vec: Vec<StringDiffOp> = Vec::new();
+	let iter = zip(s1.chars(), s2.chars());
+
+	for (i, (char1, char2)) in iter.enumerate() {
+		if char1 != char2 {
+			opp_vec.push(StringDiffOp::new_substitute(char1, char2, i));
+		}
 	}
+	Diff::new(opp_vec, s1.len())
 }
 
 #[cfg(test)]
 mod tests {
-	use crate::{StringDiffAlgorithm, StringDiffOp};
-
-	#[test]
-	fn test_hamming_distance_edit_distance() {
-		let test_struct = super::HammingDistance {};
-
-		assert_eq!(3, test_struct.distance("karolin", "kathrin"));
-		assert_eq!(3, test_struct.distance("karolin", "kerstin"));
-		assert_eq!(4, test_struct.distance("kathrin", "kerstin"));
-		assert_eq!(4, test_struct.distance("0000", "1111"));
-		assert_eq!(3, test_struct.distance("2173896", "2233796"));
-	}
+	use crate::StringDiffOp;
 
 	#[test]
 	fn test_hamming_distance_op_distance() {
-		let test_struct = super::HammingDistance {};
+		use crate::hamming::hamming;
+		use crate::Diff;
 
-		let test_vec: Vec<StringDiffOp> = vec![
-			StringDiffOp::new_substitute('r', 't', 2),
-			StringDiffOp::new_substitute('o', 'h', 3),
-			StringDiffOp::new_substitute('l', 'r', 4),
-		];
+		let test_diff = Diff {
+			ops: Box::new([
+				StringDiffOp::new_substitute('r', 't', 2),
+				StringDiffOp::new_substitute('o', 'h', 3),
+				StringDiffOp::new_substitute('l', 'r', 4),
+			]),
+			total_len: 7,
+		};
 
-		let test_vec_2: Vec<StringDiffOp> = vec![
-			StringDiffOp::new_substitute('a', 'e', 1),
-			StringDiffOp::new_substitute('o', 's', 3),
-			StringDiffOp::new_substitute('l', 't', 4),
-		];
+		let test_diff_2 = Diff {
+			ops: Box::new([
+				StringDiffOp::new_substitute('a', 'e', 1),
+				StringDiffOp::new_substitute('o', 's', 3),
+				StringDiffOp::new_substitute('l', 't', 4),
+			]),
+			total_len: 7,
+		};
 
-		let test_vec_3: Vec<StringDiffOp> = vec![
-			StringDiffOp::new_substitute('a', 'e', 1),
-			StringDiffOp::new_substitute('t', 'r', 2),
-			StringDiffOp::new_substitute('h', 's', 3),
-			StringDiffOp::new_substitute('r', 't', 4),
-		];
+		let test_diff_3 = Diff {
+			ops: Box::new([
+				StringDiffOp::new_substitute('a', 'e', 1),
+				StringDiffOp::new_substitute('t', 'r', 2),
+				StringDiffOp::new_substitute('h', 's', 3),
+				StringDiffOp::new_substitute('r', 't', 4),
+			]),
+			total_len: 7,
+		};
 
-		let test_vec_4: Vec<StringDiffOp> = vec![
-			StringDiffOp::new_substitute('0', '1', 0),
-			StringDiffOp::new_substitute('0', '1', 1),
-			StringDiffOp::new_substitute('0', '1', 2),
-			StringDiffOp::new_substitute('0', '1', 3),
-		];
+		let test_diff_4 = Diff {
+			ops: Box::new([
+				StringDiffOp::new_substitute('0', '1', 0),
+				StringDiffOp::new_substitute('0', '1', 1),
+				StringDiffOp::new_substitute('0', '1', 2),
+				StringDiffOp::new_substitute('0', '1', 3),
+			]),
+			total_len: 4,
+		};
 
-		let test_vec_5: Vec<StringDiffOp> = vec![
-			StringDiffOp::new_substitute('1', '2', 1),
-			StringDiffOp::new_substitute('7', '3', 2),
-			StringDiffOp::new_substitute('8', '7', 4),
-		];
+		let test_diff_5 = Diff {
+			ops: Box::new([
+				StringDiffOp::new_substitute('1', '2', 1),
+				StringDiffOp::new_substitute('7', '3', 2),
+				StringDiffOp::new_substitute('8', '7', 4),
+			]),
+			total_len: 7,
+		};
 
-		assert_eq!(&test_vec, &test_struct.diff("karolin", "kathrin"));
-		assert_eq!(&test_vec_2, &test_struct.diff("karolin", "kerstin"));
-		assert_eq!(&test_vec_3, &test_struct.diff("kathrin", "kerstin"));
-		assert_eq!(&test_vec_4, &test_struct.diff("0000", "1111"));
-		assert_eq!(&test_vec_5, &test_struct.diff("2173896", "2233796"));
+		assert_eq!(test_diff, hamming("karolin", "kathrin"));
+		assert_eq!(test_diff_2, hamming("karolin", "kerstin"));
+		assert_eq!(test_diff_3, hamming("kathrin", "kerstin"));
+		assert_eq!(test_diff_4, hamming("0000", "1111"));
+		assert_eq!(test_diff_5, hamming("2173896", "2233796"));
 	}
 }

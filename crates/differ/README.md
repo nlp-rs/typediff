@@ -3,7 +3,7 @@
 [![CI](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml)
 [![Security audit](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml)
 > warning: **Differ.rs is currently experimental**
-This crate provides edit distance, delta vectors between 2 words, and lets you apply delta vectors in order to transform words.
+This crate provides edit distance, deltas between 2 words, and lets you apply deltas in order to transform words.
 
 ## Install
 ```shell
@@ -16,40 +16,38 @@ differ-rs = "0.0.0"
 ```
 
 ## Features
-* `apply_diff`: Allows users to apply delta vectors in order to transform a words.
-* `extra_traits`: all `struct`s implemented in `differ-rs` are `HammingDistance` and `LevenshteinDistance`. Each Struct implements the `diff` and `distance` methods. 
-
+* `Diff` struct: Contains a Box<> of operations between two strings. Also keeps track of length of longest string. Has methods that allows users to get the edit distance between two words, and view delta operations. 
+* `apply_diff()`: Allows users to apply deltas in order to transform a words.
+* `levenshtein()`: Returns a Diff struct between string 1 and string 2. Levenshtein algorithm can detect insertions, deletions, and substitutions. 
+* `hamming()`: Returns a Diff struct between string 1 and string 2. Hamming algorithm can only detect substitutions, and string 1 and string 2 must me equal length.
+  
 ## How it works
-* `apply_diff` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
-* `StringDiffAlgorithm` provides two methods `diff` which gives you a transformation vector from the first to second string. The `distance` method gives you the edit distance from the frist argument to the second argument. The structs `HammingDistance` and `LevenshteinDistance` have their own implementations for each method.
+* `apply_diff()` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
+* `Diff` holds a `Box<StringDiffOp>`, and the longest length of any two strings. Both `levenshtein()`, and `hamming()`  eturn this struct.
 
 ## Examples
 
 Getting the edit distance between two words using Levenshtein algorithm 
 ```rs
-use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
+use differ_rs::levenshtein;
 
 fn main(){
-    let my_levensthein = LevenshteinDistance {};
+    let levensthein_edit_distance = levenshtein("Sitting", "Kitten").distance();
 
-    let edit_distance = my_levensthein.distance("Sitting", "Kitten");
-    
-    assert_eq!(3, edit_distance)
+    assert_eq!(3, levensthein_edit_distance);
 }
 ```
 > **Note**: We are getting the edit distance to get from "Sitting" to "Kitten".
 
-Getting the delta vectors between two words using Levenshtein algorithm 
+To view the delta between two words using Levenshtein algorithm 
 ```rs
-use differ_rs::{LevenshteinDistance, StringDiffAlgorithm};
+use differ_rs::levenshtein;
 
 fn main(){
-    let my_levensthein = LevenshteinDistance {};
+    let my_levensthein = levenshtein("Sitting", "Kitten");
 
-    let delta_vec = my_levensthein.diff("Sitting", "Kitten");
-    
-    for i in delta_vec.iter(){
-        println!("{:?}", i);
+    for diff_op in my_levensthein.ops.iter() {
+        println!("{:?}", diff_op);
     }
 }
 ```
@@ -57,40 +55,36 @@ fn main(){
 This example outputs:
 
 ```text
-StringDiffOp { kind: Delete('g'), index: 6 }
+StringDiffOp { kind: Delete, index: 6 }
 StringDiffOp { kind: Substitute('i', 'e'), index: 4 }
 StringDiffOp { kind: Substitute('S', 'K'), index: 0 }
 ```
 
 Getting the edit distance between two words using Hamming algorithm 
 ```rs
-use differ_rs::{HammingDistance, StringDiffAlgorithm};
+use differ_rs::hamming;
 
 fn main(){
-    let my_hamming = HammingDistance {};
+	let kathrin_edit_distance = hamming("karolin", "kathrin").distance();
 
-    let edit_distance = my_hamming.distance("karolin", "kathrin");
-    
-    assert_eq!(3, edit_distance);
+    assert_eq!(3, kathrin_edit_distance);
 }
 ```
-Note: We are getting the edit distance to get from "karolin" to "kathrin",
+> **Note**: We are getting the edit distance to get from "karolin" to "kathrin",
 additionally the first string and second string must be the same length, or
 will cause a panic to be triggered. 
 
 
-Getting the delta vectors between two words using Hamming algorithm 
+Getting the deltas between two words using Hamming algorithm 
 ```rs
-use differ_rs::{HammingDistance, StringDiffAlgorithm};
+use differ_rs::hamming;
 
 fn main(){
-    let my_hamming = HammingDistance {};
+	let kathrin_edit_distance = hamming("karolin", "kathrin");
 
-    let delta_vec = my_hamming.diff("karolin", "kathrin");
-    
-    for i in delta_vec.iter(){
-        println!("{:?}", i);
-    }
+    for diff_op in kathrin_edit_distance.ops.iter() {
+		println!("{:?}", diff_op);
+	}
 }
 ```
 This example outputs:
@@ -101,18 +95,17 @@ StringDiffOp { kind: Substitute('o', 'h'), index: 3 }
 StringDiffOp { kind: Substitute('l', 'r'), index: 4 }
 ```
 
-Applying delta vectors to words
+Applying deltas to words
 ```rs
-use differ_rs::{HammingDistance, LevenshteinDistance, StringDiffAlgorithm,apply_diff};
+use differ_rs::{hamming, levenshtein, apply_diff};
 
 fn main(){
-    let my_levensthein = LevenshteinDistance {};
-    let levensthein_delta_vec = my_levensthein.diff("sitting", "kitten");
-    let delta_applied_v1 = apply_diff("sitting", levensthein_delta_vec);
+    let my_levensthein = levenshtein("sitting", "kitten");
+    let delta_applied_v1 = apply_diff("sitting", my_levensthein.ops.to_vec());
 
-    let my_hamming = HammingDistance {};
-    let hamming_delta_vec = my_hamming.diff("karolin", "kathrin");
-    let delta_applied_v2 = apply_diff("karolin", hamming_delta_vec);
+
+    let my_hamming = hamming("karolin", "kathrin");
+    let delta_applied_v2 = apply_diff("karolin", my_hamming.ops.to_vec());
 
     assert_eq!("kitten", delta_applied_v1);
     assert_eq!("kathrin", delta_applied_v2);
