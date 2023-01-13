@@ -77,7 +77,10 @@ mod tests {
 			String::from("SETS"),
 			super::apply_diff("RESET", test_box_3.to_vec())
 		);
-		assert_eq!(String::from("heeoy"), super::apply_diff("hey", test_box_4.to_vec()));
+		assert_eq!(
+			String::from("heeoy"),
+			super::apply_diff("hey", test_box_4.to_vec())
+		);
 		assert_eq!(
 			String::from("skater"),
 			super::apply_diff("kate", test_box_5.to_vec())
