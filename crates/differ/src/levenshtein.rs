@@ -166,4 +166,52 @@ mod tests {
 		assert_eq!(test_diff_3, levenshtein("RESET", "SETS"));
 		assert_eq!(test_diff_4, levenshtein("RESET", "RESETER"));
 	}
+
+	#[test]
+	fn test_levenshtein_similarity() {
+		use crate::levenshtein::levenshtein;
+		use crate::DiffScoreConfig;
+
+		let sim = levenshtein("Kittens", "kitten");
+		let mut config = DiffScoreConfig::default();
+		config.lowercase_sub_cost = 0.5;
+		let similarity = ((7.0) - 1.5) / (7.0);
+
+		let sim_v2 = levenshtein("cattle", "battle");
+		let mut config_v2 = DiffScoreConfig::default();
+		config_v2.sub_cost = 2.0;
+		let similarity_v2 = ((6.0) - 2.0) / (6.0);
+
+		let sim_v3 = levenshtein("Saturday", "Sunday");
+		let config_v3 = DiffScoreConfig::default();
+		let similarity_v3 = ((8.0) - 3.0) / (8.0);		
+
+		assert_eq!(similarity, sim.similarity(&config));
+		assert_eq!(similarity_v2, sim_v2.similarity(&config_v2));
+		assert_eq!(similarity_v3, sim_v3.similarity(&config_v3));
+	}
+
+	#[test]
+	fn test_levenshtein_difference() {
+		use crate::levenshtein::levenshtein;
+		use crate::DiffScoreConfig;
+
+		let diff = levenshtein("Kittens", "kitten");
+		let mut config = DiffScoreConfig::default();
+		config.lowercase_sub_cost = 0.5;
+		let difference = 1.0 - ((7.0) - 1.5) / (7.0);
+
+		let diff_v2 = levenshtein("cattle", "battle");
+		let mut config_v2 = DiffScoreConfig::default();
+		config_v2.sub_cost = 2.0;
+		let difference_v2 = 1.0 - ((6.0) - 2.0) / (6.0);
+
+		let diff_v3 = levenshtein("Saturday", "Sunday");
+		let config_v3 = DiffScoreConfig::default();
+		let difference_v3 = 1.0 - ((8.0) - 3.0) / (8.0);		
+
+		assert_eq!(difference, diff.difference(&config));
+		assert_eq!(difference_v2, diff_v2.difference(&config_v2));
+		assert_eq!(difference_v3, diff_v3.difference(&config_v3));
+	}
 }
