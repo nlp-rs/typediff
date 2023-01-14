@@ -90,7 +90,7 @@ mod tests {
 		let similarity = ((7.0) - 3.0) / (7.0);
 
 		let sim_v2 = hamming("karolin", "kerstin");
-		let mut config_v2= DiffScoreConfig::default();
+		let mut config_v2 = DiffScoreConfig::default();
 		config_v2.sub_cost = 0.5;
 		let similarity_v2 = ((7.0) - 1.5) / (7.0);
 
@@ -111,10 +111,10 @@ mod tests {
 
 		let diff = hamming("karolin", "kathrin");
 		let config = DiffScoreConfig::default();
-		let difference =((7.0) - 3.0) / (7.0);
+		let difference = ((7.0) - 3.0) / (7.0);
 
 		let diff_v2 = hamming("karolin", "kerstin");
-		let mut config_v2= DiffScoreConfig::default();
+		let mut config_v2 = DiffScoreConfig::default();
 		config_v2.sub_cost = 0.5;
 		let difference_v2 = ((7.0) - 1.5) / (7.0);
 

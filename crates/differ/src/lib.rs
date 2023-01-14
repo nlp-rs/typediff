@@ -40,11 +40,11 @@ impl StringDiffOp {
 
 #[derive(Debug, PartialEq)]
 pub struct DiffScoreConfig {
-    pub sub_cost: f32,
-    pub lowercase_sub_cost: f32,
-    pub indel_cost: f32,
-    pub transpose_cost: f32,
-    // future properties here as needed
+	pub sub_cost: f32,
+	pub lowercase_sub_cost: f32,
+	pub indel_cost: f32,
+	pub transpose_cost: f32,
+	// future properties here as needed
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -54,14 +54,14 @@ pub struct Diff {
 }
 
 impl Default for DiffScoreConfig {
-    fn default() -> Self {
-        Self {
-            sub_cost: 1.0,
-            lowercase_sub_cost: 1.0,
-            indel_cost: 1.0,
-            transpose_cost: 1.0,
-        }
-    }
+	fn default() -> Self {
+		Self {
+			sub_cost: 1.0,
+			lowercase_sub_cost: 1.0,
+			indel_cost: 1.0,
+			transpose_cost: 1.0,
+		}
+	}
 }
 
 impl Diff {
@@ -76,9 +76,9 @@ impl Diff {
 		self.ops.len()
 	}
 
-	pub fn similarity(&self, score: &DiffScoreConfig) -> f32{
-		let mut similarity_score : f32 = self.total_len as f32;
-		for i in self.ops.iter(){
+	pub fn similarity(&self, score: &DiffScoreConfig) -> f32 {
+		let mut similarity_score: f32 = self.total_len as f32;
+		for i in self.ops.iter() {
 			match i.kind {
 				StringDiffOpKind::Delete => {
 					similarity_score -= score.indel_cost;
@@ -87,10 +87,9 @@ impl Diff {
 					similarity_score -= score.indel_cost;
 				}
 				StringDiffOpKind::Substitute(_x, _y) => {
-					if _x.to_ascii_lowercase() == _y.to_ascii_lowercase() { 
-						similarity_score -=  score.lowercase_sub_cost;
-					}
-					else {
+					if _x.to_ascii_lowercase() == _y.to_ascii_lowercase() {
+						similarity_score -= score.lowercase_sub_cost;
+					} else {
 						similarity_score -= score.sub_cost;
 					}
 				}
@@ -101,7 +100,7 @@ impl Diff {
 		}
 		similarity_score / (self.total_len as f32)
 	}
-	pub fn difference(&self, score: &DiffScoreConfig) -> f32{
+	pub fn difference(&self, score: &DiffScoreConfig) -> f32 {
 		1.0 - self.similarity(&score)
 	}
 }
