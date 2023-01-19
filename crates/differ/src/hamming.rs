@@ -79,4 +79,52 @@ mod tests {
 		assert_eq!(test_diff_4, hamming("0000", "1111"));
 		assert_eq!(test_diff_5, hamming("2173896", "2233796"));
 	}
+
+	#[test]
+	fn test_hamming_similarity() {
+		use crate::hamming::hamming;
+		use crate::DiffScoreConfig;
+
+		let sim = hamming("karolin", "kathrin");
+		let config = DiffScoreConfig::default();
+		let similarity = ((7.0) - 3.0) / (7.0);
+
+		let sim_v2 = hamming("karolin", "kerstin");
+		let mut config_v2 = DiffScoreConfig::default();
+		config_v2.sub_cost = 0.5;
+		let similarity_v2 = ((7.0) - 1.5) / (7.0);
+
+		let sim_v3 = hamming("kathrin", "kerstin");
+		let mut config_v3 = DiffScoreConfig::default();
+		config_v3.sub_cost = 1.5;
+		let similarity_v3 = ((7.0) - 6.0) / (7.0);
+
+		assert_eq!(similarity, sim.similarity(&config));
+		assert_eq!(similarity_v2, sim_v2.similarity(&config_v2));
+		assert_eq!(similarity_v3, sim_v3.similarity(&config_v3));
+	}
+
+	#[test]
+	fn test_hamming_difference() {
+		use crate::hamming::hamming;
+		use crate::DiffScoreConfig;
+
+		let diff = hamming("karolin", "kathrin");
+		let config = DiffScoreConfig::default();
+		let difference = ((7.0) - 3.0) / (7.0);
+
+		let diff_v2 = hamming("karolin", "kerstin");
+		let mut config_v2 = DiffScoreConfig::default();
+		config_v2.sub_cost = 0.5;
+		let difference_v2 = ((7.0) - 1.5) / (7.0);
+
+		let diff_v3 = hamming("kathrin", "kerstin");
+		let mut config_v3 = DiffScoreConfig::default();
+		config_v3.sub_cost = 1.5;
+		let difference_v3 = ((7.0) - 6.0) / (7.0);
+
+		assert_eq!(difference, diff.similarity(&config));
+		assert_eq!(difference_v2, diff_v2.similarity(&config_v2));
+		assert_eq!(difference_v3, diff_v3.similarity(&config_v3));
+	}
 }
