@@ -3,7 +3,7 @@
 [![CI](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml)
 [![Security audit](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml)
 > warning: **Differ.rs is currently experimental**
-This crate provides edit distance, deltas between 2 words, and lets you apply deltas in order to transform words.
+This crate provides edit distance, deltas between 2 words, lets you apply deltas in order to transform words, and lets you get the similarity and difference between two words.
 
 ## Install
 ```shell
@@ -17,13 +17,18 @@ differ-rs = "0.0.0"
 
 ## Features
 * `Diff` struct: Contains a Box<> of operations between two strings. Also keeps track of length of longest string. Has methods that allows users to get the edit distance between two words, and view delta operations. 
+* `DiffScoreConfig` struct: implements a default trait which the user can adjust the sub_cost, lowercase_sub_cost, indel_cost, and transpose_cost. By default they are all set to 1. You can pass this struct to `similarity()` and `difference()` both which are methods of the `Diff` struct.
 * `apply_diff()`: Allows users to apply deltas in order to transform a words.
 * `levenshtein()`: Returns a Diff struct between string 1 and string 2. Levenshtein algorithm can detect insertions, deletions, and substitutions. 
 * `hamming()`: Returns a Diff struct between string 1 and string 2. Hamming algorithm can only detect substitutions, and string 1 and string 2 must me equal length.
-  
+* `similarity()`: Tells you how similarity two words are.
+* `difference()`: Tells you how different two words are.
+
 ## How it works
 * `apply_diff()` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
-* `Diff` holds a `Box<StringDiffOp>`, and the longest length of any two strings. Both `levenshtein()`, and `hamming()`  eturn this struct.
+* `Diff` holds a `Box<StringDiffOp>`, and the longest length of any two strings. Both `levenshtein()`, and `hamming()`  return this struct.
+* `similarity()`: works by taking each operation inside `Box<[StringDiffOp]>`. For each operation inside `Box<StringDiffOp>` it applies the `DiffScoreConfig` penalties.
+* `difference()`: works by perorming the following formula `1 - similarity()`
 
 ## Examples
 
@@ -111,6 +116,42 @@ fn main(){
     assert_eq!("kathrin", delta_applied_v2);
 }
 ```
+
+Getting the similarity between two words
+```rs
+use differ_rs::{DiffScoreConfig, levenshtein, hamming};
+
+fn main(){
+    let levenshtein_diff = levenshtein("Kittens", "kitten");
+    let hamming_diff = hamming("karolin", "kathrin");
+    let mut config = DiffScoreConfig::default();
+
+    assert_eq!(0.71428573, levenshtein_diff.similarity(&config));
+    assert_eq!(0.5714286, hamming_diff.similarity(&config));
+
+    config.lowercase_sub_cost = 0.5;
+
+    assert_eq!(0.78571427, levenshtein_diff.similarity(&config));
+}
+```
+
+Getting the difference between two words
+```rs
+use differ_rs::{DiffScoreConfig, levenshtein, hamming};
+fn main(){
+    let levenshtein_diff = levenshtein("Kittens", "kitten");
+    let hamming_diff = hamming("karolin", "kathrin");
+    let mut config = DiffScoreConfig::default();
+
+    assert_eq!(1.0 - 0.71428573, levenshtein_diff.difference(&config));
+    assert_eq!(1.0 - 0.5714286, hamming_diff.difference(&config));
+
+    config.lowercase_sub_cost = 0.5;
+
+    assert_eq!(1.0 - 0.78571427, levenshtein_diff.difference(&config));
+}
+```
+
 
 ## License
 Licensed under either of
