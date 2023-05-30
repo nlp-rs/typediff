@@ -28,7 +28,7 @@ differ-rs = "0.0.0"
 * `apply_diff()` works by giving a string and a transformation vector to the method. Then the transformation vector is applied to the string given in the first argument.
 * `Diff` holds a `Box<StringDiffOp>`, and the longest length of any two strings. Both `levenshtein()`, and `hamming()`  return this struct.
 * `similarity()`: works by taking each operation inside `Box<[StringDiffOp]>`. For each operation inside `Box<StringDiffOp>` it applies the `DiffScoreConfig` penalties.
-* `difference()`: works by perorming the following formula `1 - similarity()`
+* `difference()`: works by performing the following formula `1 - similarity()`
 
 ## Examples
 
@@ -119,36 +119,37 @@ fn main(){
 
 Getting the similarity between two words
 ```rs
-use differ_rs::{DiffScoreConfig, levenshtein, hamming};
+use differ_rs::{hamming, levenshtein, DiffScoreConfig};
 
-fn main(){
-    let levenshtein_diff = levenshtein("Kittens", "kitten");
-    let hamming_diff = hamming("karolin", "kathrin");
-    let mut config = DiffScoreConfig::default();
+fn main() {
+	let levenshtein_diff = levenshtein("Kittens", "kitten");
+	let hamming_diff = hamming("karolin", "kathrin");
+	let mut config = DiffScoreConfig::default();
 
-    assert_eq!(0.71428573, levenshtein_diff.similarity(&config));
-    assert_eq!(0.5714286, hamming_diff.similarity(&config));
+	assert_eq!(5.0 / 7.0, levenshtein_diff.similarity(&config));
+	assert_eq!(4.0 / 7.0, hamming_diff.similarity(&config));
 
-    config.lowercase_sub_cost = 0.5;
+	config.lowercase_sub_cost = 0.5;
 
-    assert_eq!(0.78571427, levenshtein_diff.similarity(&config));
+	assert_eq!(5.5 / 7.0, levenshtein_diff.similarity(&config));
 }
 ```
 
 Getting the difference between two words
 ```rs
-use differ_rs::{DiffScoreConfig, levenshtein, hamming};
-fn main(){
-    let levenshtein_diff = levenshtein("Kittens", "kitten");
-    let hamming_diff = hamming("karolin", "kathrin");
-    let mut config = DiffScoreConfig::default();
+use differ_rs::{hamming, levenshtein, DiffScoreConfig};
+fn main() {
+	let levenshtein_diff = levenshtein("Kittens", "kitten");
+	let hamming_diff = hamming("karolin", "kathrin");
+	let mut config = DiffScoreConfig::default();
 
-    assert_eq!(1.0 - 0.71428573, levenshtein_diff.difference(&config));
-    assert_eq!(1.0 - 0.5714286, hamming_diff.difference(&config));
+	assert_eq!(1.0 - 5.0 / 7.0, levenshtein_diff.difference(&config));
+	assert_eq!(1.0 - 4.0 / 7.0, hamming_diff.difference(&config));
 
-    config.lowercase_sub_cost = 0.5;
+	config.lowercase_sub_cost = 0.5;
 
-    assert_eq!(1.0 - 0.78571427, levenshtein_diff.difference(&config));
+	assert_eq!(1.0 - 5.5 / 7.0, levenshtein_diff.difference(&config));
+}
 }
 ```
 
