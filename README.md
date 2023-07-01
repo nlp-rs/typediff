@@ -5,9 +5,6 @@ Differ.rs is a collection of natural langauge processing crates, all written in 
 # *Brief overview*
 ### Crates
  - [x] [`differ`](./crates/differ): Provides edit distance, delta vectors between 2 words, and word transformation 
- - [ ] `bio_dif`: Proivdes functions in order to to align protein or nucleotide sequences.
-
-
 
 ## License
 Licensed under either of
