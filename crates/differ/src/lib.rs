@@ -68,7 +68,7 @@ impl Diff {
 	pub fn new(diffs: Vec<StringDiffOp>, total_len: usize) -> Self {
 		Self {
 			ops: diffs.into_boxed_slice(),
-			total_len: total_len,
+			total_len,
 		}
 	}
 
@@ -101,7 +101,7 @@ impl Diff {
 		similarity_score / (self.total_len as f32)
 	}
 	pub fn difference(&self, score: &DiffScoreConfig) -> f32 {
-		1.0 - self.similarity(&score)
+		1.0 - self.similarity(score)
 	}
 }
 
@@ -118,8 +118,7 @@ pub(crate) fn get_operation_matrix(
 	let second_string_len: usize = s2.len();
 
 	let mut dist_vector = vec![vec![0isize; first_string_len + 1]; second_string_len + 1];
-	let mut dir_vector: Vec<Vec<char>> =
-		vec![vec![' '; first_string_len + 1]; second_string_len + 1];
+	let mut dir_vector: Vec<Vec<char>> = vec![vec![' '; first_string_len + 1]; second_string_len + 1];
 
 	init_vec(
 		&mut dist_vector,
@@ -131,18 +130,22 @@ pub(crate) fn get_operation_matrix(
 	for j in 1..second_string_len + 1 {
 		dir_vector[j][0] = '^';
 	}
+
 	for i in 1..first_string_len + 1 {
 		dir_vector[0][i] = '<';
 	}
 
 	for i in 1..second_string_len + 1 {
 		for j in 1..first_string_len + 1 {
-			let diagonal_gap_cost: isize;
-			if s1.chars().nth(j - 1).unwrap() == s2.chars().nth(i - 1).unwrap() {
-				diagonal_gap_cost = char_match;
+			let diagonal_gap_cost: isize = if
+				s1.chars().nth(j - 1).unwrap() ==
+				s2.chars().nth(i - 1).unwrap()
+			{
+				char_match
 			} else {
-				diagonal_gap_cost = not_char_match;
-			}
+				not_char_match
+			};
+
 			(dist_vector[i][j], dir_vector[i][j]) = dist_with_dir(
 				dist_vector[i - 1][j] + indent_cost, //deletion
 				dist_vector[i][j - 1] + indent_cost, //insertion

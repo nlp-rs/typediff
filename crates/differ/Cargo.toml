@@ -13,6 +13,19 @@ categories = ["data-structures", "algorithms", "text-processing", "text-editors"
 license = "MIT OR Apache-2.0"
 edition = "2021"
 rust-version = "1.63.0"
+exclude = [
+	".devcontainer",
+	".github",
+	".vscode",
+	".idea",
+	"deny.toml",
+	".commitlintrc.json",
+	"package.json",
+	"package-lock.json",
+	"fuzz",
+	"book",
+	"benches",
+]
 
 [dev-dependencies]
 criterion = { version = "0.4.0", features = ["html_reports"] }

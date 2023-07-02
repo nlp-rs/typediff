@@ -1,7 +1,7 @@
 use crate::{get_operation_matrix, Diff, StringDiffOp};
 use core::panic;
 
-pub(crate) fn reverse_vec_and_indexes(my_vec: &mut Vec<StringDiffOp>, mut top_string_len: usize) {
+pub(crate) fn reverse_vec_and_indexes(my_vec: &mut [StringDiffOp], mut top_string_len: usize) {
 	my_vec.reverse();
 	for i in my_vec.iter_mut() {
 		i.index = top_string_len;
@@ -10,7 +10,7 @@ pub(crate) fn reverse_vec_and_indexes(my_vec: &mut Vec<StringDiffOp>, mut top_st
 }
 
 pub(crate) fn get_operations(
-	my_opp: &Vec<Vec<char>>,
+	my_opp: &[Vec<char>],
 	left_string: &str,
 	top_string: &str,
 ) -> Vec<StringDiffOp> {
@@ -28,8 +28,10 @@ pub(crate) fn get_operations(
 		match my_opp[left_str_len][top_str_len] {
 			//insertion
 			'^' => {
-				let insertion_op =
-					StringDiffOp::new_insert(left_string.chars().nth(left_str_len - 1).unwrap(), 0);
+				let insertion_op = StringDiffOp::new_insert(
+					left_string.chars().nth(left_str_len - 1).unwrap(),
+					0,
+				);
 
 				left_str_len -= 1;
 				diff_ops.push(insertion_op);
@@ -108,7 +110,7 @@ pub(crate) fn my_init_vec(my_vec: &mut Vec<Vec<isize>>, top_str_len: usize, left
 
 pub fn levenshtein<'a>(s1: &'a str, s2: &'a str) -> Diff {
 	let dir_matrix = get_operation_matrix(s1, s2, min_dist_with_dir, my_init_vec, 0, 1, 1);
-	let temp = get_operations(&dir_matrix, s2, s1).clone();
+	let temp = get_operations(&dir_matrix, s2, s1);
 	let val: usize = if s1.len() >= s2.len() {
 		s1.len()
 	} else {
