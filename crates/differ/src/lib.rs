@@ -118,7 +118,8 @@ pub(crate) fn get_operation_matrix(
 	let second_string_len: usize = s2.len();
 
 	let mut dist_vector = vec![vec![0isize; first_string_len + 1]; second_string_len + 1];
-	let mut dir_vector: Vec<Vec<char>> = vec![vec![' '; first_string_len + 1]; second_string_len + 1];
+	let mut dir_vector: Vec<Vec<char>> =
+		vec![vec![' '; first_string_len + 1]; second_string_len + 1];
 
 	init_vec(
 		&mut dist_vector,
@@ -137,9 +138,8 @@ pub(crate) fn get_operation_matrix(
 
 	for i in 1..second_string_len + 1 {
 		for j in 1..first_string_len + 1 {
-			let diagonal_gap_cost: isize = if
-				s1.chars().nth(j - 1).unwrap() ==
-				s2.chars().nth(i - 1).unwrap()
+			let diagonal_gap_cost: isize = if s1.chars().nth(j - 1).unwrap()
+				== s2.chars().nth(i - 1).unwrap()
 			{
 				char_match
 			} else {
