@@ -1,0 +1,31 @@
+[package]
+name = "semantic-typediff-rs"
+version = "0.0.0"
+authors = [
+	"Samantha Nguyen, <contact@samanthanguyen.me>",
+	"Alfredo Gutierrez <icealfredo123@gmail.com>"
+]
+description = "Provies semantic diffing"
+repository = "https://github.com/nlp-rs/typediff.git"
+readme = "README.md"
+keywords = ["nlp", "lemma", "morphemes", "nouns",]
+categories = ["data-structures", "algorithms", "text-processing", "text-editors"]
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.63.0"
+
+[dev-dependencies]
+criterion = { version = "0.4.0", features = ["html_reports"] }
+iai = "0.1.0"
+
+# criterion benchmarks
+[[bench]]
+path = "benches/criterion/fibb.rs"
+name = "criterion_fibb"
+harness = false
+
+# iai benchmarks
+[[bench]]
+path = "benches/iai/fibb.rs"
+name = "iai_fibb"
+harness = false
