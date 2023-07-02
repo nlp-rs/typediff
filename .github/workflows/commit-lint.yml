@@ -3,7 +3,8 @@ name: commit-lint
 on:
   pull_request:
   push:
-    - main
+    branches:
+      - main
 
 jobs:
   commit-lint:
