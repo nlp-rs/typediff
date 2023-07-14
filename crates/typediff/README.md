@@ -1,8 +1,8 @@
-# Differ.rs
+# typediff
 [![License](https://img.shields.io/badge/license-MIT%20%26%20Apache%202.0-green)](#license)
-[![CI](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/main.yml)
-[![Security audit](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml/badge.svg)](https://github.com/nlp-rs/differ.rs/actions/workflows/security-audit.yml)
-> warning: **Differ.rs is currently experimental**
+[![CI](https://github.com/nlp-rs/typediff/actions/workflows/main.yml/badge.svg)](https://github.com/nlp-rs/typediff/actions/workflows/main.yml)
+[![Security audit](https://github.com/nlp-rs/typediff/actions/workflows/security-audit.yml/badge.svg)](https://github.com/nlp-rs/typediff/actions/workflows/security-audit.yml)
+> warning: **typediff is currently experimental**
 This crate provides edit distance, deltas between 2 words, lets you apply deltas in order to transform words, and lets you get the similarity and difference between two words.
 
 ## Install

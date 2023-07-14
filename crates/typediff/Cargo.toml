@@ -1,12 +1,12 @@
 [package]
-name = "differ-rs"
+name = "typediff"
 version = "0.0.0"
 authors = [
 	"Samantha Nguyen, <contact@samanthanguyen.me>",
 	"Alfredo Gutierrez <icealfredo123@gmail.com>"
 ]
 description = "Provides edit distance, delta vectors between 2 words, and word transformation"
-repository = "https://github.com/nlp-rs/differ.rs.git"
+repository = "https://github.com/nlp-rs/typediff.git"
 readme = "README.md"
 keywords = ["nlp", "Edit-distance", "HammingDistance", "LevenshteinDistance"]
 categories = ["data-structures", "algorithms", "text-processing", "text-editors"]
