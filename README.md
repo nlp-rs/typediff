@@ -1,10 +1,10 @@
-# differ.rs
+# typediff
 
-Differ.rs is a collection of natural langauge processing crates, all written in Rust.
+Typediff is a collection of natural langauge processing crates, all written in Rust.
 
 # *Brief overview*
 ### Crates
- - [x] [`differ`](./crates/differ): Provides edit distance, delta vectors between 2 words, and word transformation 
+ - [x] [`typediff`](./crates/typediff): Provides edit distance, delta vectors between 2 words, and word transformation 
 
 ## License
 Licensed under either of
